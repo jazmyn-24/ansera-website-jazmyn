@@ -9,6 +9,7 @@ import Product from "./pages/Product";
 import Solutions from "./pages/Solutions";
 import Blog from "./pages/Blog";
 import BlogPost from "./pages/BlogPost";
+import Pricing from "./pages/Pricing";
 
 
 function Router() {
@@ -19,6 +20,7 @@ function Router() {
       <Route path={"/solutions"} component={Solutions} />
       <Route path={"/blog/:slug"} component={BlogPost} />
       <Route path={"/blog"} component={Blog} />
+      <Route path={"/pricing"} component={Pricing} />
       <Route path={"/404"} component={NotFound} />
       {/* Final fallback route */}
       <Route component={NotFound} />

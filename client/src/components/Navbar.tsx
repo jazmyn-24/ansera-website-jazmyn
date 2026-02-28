@@ -25,7 +25,7 @@ export default function Navbar() {
     { label: "Solutions", href: "/solutions", isRoute: true },
     { label: "Blog", href: "/blog", isRoute: true },
     { label: "How It Works", href: "#how-it-works", isRoute: false },
-    { label: "Pricing", href: "#pricing", isRoute: false },
+    { label: "Pricing", href: "/pricing", isRoute: true },
   ];
 
   const scrollTo = (href: string, isRoute: boolean) => {
