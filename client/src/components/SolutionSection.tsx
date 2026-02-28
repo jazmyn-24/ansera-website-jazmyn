@@ -1,55 +1,80 @@
 /*
- * SolutionSection — Linear.app-inspired tabbed feature showcase
- * Dark background, left nav tabs, right product UI mockup
- * Real content from ansera.ai
+ * SolutionSection — Ansera AI
+ * Tabbed feature showcase with large product mockups
+ * Light background section for contrast against the dark Problem section
  */
 
 import { useState } from "react";
-import { Zap, BarChart3, Sliders, Users, FileText } from "lucide-react";
+import { Zap, BarChart3, Sliders, Users, Globe } from "lucide-react";
 
 const features = [
   {
     id: "instant",
     icon: Zap,
-    title: "Instant AI answers",
-    headline: "Contextual answers from your content.",
+    tab: "Instant AI answers",
+    headline: "Real answers from your content. Not generic AI guesses.",
     description:
-      "Ansera delivers real-time, intelligent responses based on your website's actual content — not generic AI guesses. It understands context, not just keywords, so visitors always get precise answers.",
+      "Ansera reads and understands your website's actual content — product pages, blog posts, help docs — and delivers precise, contextual answers in real time. It understands intent, not just keywords.",
     bullets: [
       "Real-time content analysis and intelligent response generation",
-      "Instantly surfaces relevant answers based on your site's actual content",
-      "Trains on external content: PDFs, YouTube/Vimeo videos, podcasts, and documents",
+      "Understands context and visitor intent — not just keyword matching",
+      "Trains on external content: PDFs, YouTube/Vimeo videos, podcasts",
     ],
     mockup: (
-      <div className="rounded-2xl overflow-hidden" style={{ background: "#0a1520", border: "1px solid rgba(255,255,255,0.08)" }}>
-        <div className="flex items-center gap-2 px-4 py-3" style={{ borderBottom: "1px solid rgba(255,255,255,0.06)", background: "rgba(255,255,255,0.02)" }}>
-          <div className="w-3 h-3 rounded-full" style={{ background: "#ef4444" }} />
-          <div className="w-3 h-3 rounded-full" style={{ background: "#f59e0b" }} />
-          <div className="w-3 h-3 rounded-full" style={{ background: "#22c55e" }} />
-          <span className="ml-3 text-xs" style={{ color: "rgba(255,255,255,0.3)" }}>ansera-search.widget</span>
+      <div
+        className="rounded-2xl overflow-hidden h-full"
+        style={{
+          background: "#0a1520",
+          border: "1px solid rgba(0,201,167,0.12)",
+          boxShadow: "0 30px 60px rgba(0,0,0,0.4)",
+        }}
+      >
+        <div
+          className="flex items-center gap-2 px-5 py-3.5"
+          style={{ borderBottom: "1px solid rgba(255,255,255,0.06)", background: "rgba(255,255,255,0.02)" }}
+        >
+          <div className="flex gap-1.5">
+            <div className="w-3 h-3 rounded-full" style={{ background: "#3a3a3a" }} />
+            <div className="w-3 h-3 rounded-full" style={{ background: "#3a3a3a" }} />
+            <div className="w-3 h-3 rounded-full" style={{ background: "#3a3a3a" }} />
+          </div>
+          <span className="ml-3 text-xs" style={{ color: "rgba(255,255,255,0.25)" }}>ansera-search.widget</span>
         </div>
-        <div className="p-6">
-          <div className="flex items-center gap-3 px-4 py-3 rounded-xl mb-6" style={{ background: "rgba(255,255,255,0.05)", border: "1px solid rgba(0,201,167,0.3)" }}>
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#00C9A7" strokeWidth="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
-            <span className="text-sm" style={{ color: "rgba(255,255,255,0.5)" }}>What's your return policy?</span>
+        <div className="p-6 space-y-5">
+          <div
+            className="flex items-center gap-3 px-4 py-3 rounded-xl"
+            style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(0,201,167,0.25)" }}
+          >
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#00C9A7" strokeWidth="2">
+              <circle cx="11" cy="11" r="8" /><path d="m21 21-4.35-4.35" />
+            </svg>
+            <span className="text-sm" style={{ color: "rgba(255,255,255,0.6)" }}>What's your return policy?</span>
             <div className="ml-auto w-2 h-4 rounded-sm animate-pulse" style={{ background: "#00C9A7" }} />
           </div>
-          <div className="space-y-3">
-            <div className="flex items-start gap-3">
-              <div className="w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5" style={{ background: "rgba(0,201,167,0.15)" }}>
-                <span className="text-xs font-bold" style={{ color: "#00C9A7" }}>A</span>
-              </div>
-              <div className="flex-1 text-sm leading-relaxed" style={{ color: "rgba(255,255,255,0.7)" }}>
-                We offer a <span style={{ color: "#00C9A7" }}>30-day money-back guarantee</span> on all orders. Simply visit your order history, select the item, and click "Start Return." Refunds are processed within 3–5 business days.
-              </div>
+          <div className="flex items-start gap-3">
+            <div
+              className="w-7 h-7 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5 text-xs font-bold"
+              style={{ background: "linear-gradient(135deg, #00C9A7, #00A88C)", color: "#0D1B2A", fontFamily: "'Space Grotesk', sans-serif" }}
+            >
+              A
             </div>
-            <div className="flex flex-wrap gap-2 mt-4">
-              {["Start a return", "Track my order", "Contact support"].map(s => (
-                <button key={s} className="text-xs px-3 py-1.5 rounded-lg transition-colors" style={{ background: "rgba(255,255,255,0.05)", color: "rgba(255,255,255,0.5)", border: "1px solid rgba(255,255,255,0.08)" }}>
-                  {s}
-                </button>
-              ))}
+            <div
+              className="flex-1 text-sm leading-relaxed p-4 rounded-xl"
+              style={{ background: "rgba(255,255,255,0.04)", color: "rgba(255,255,255,0.75)", border: "1px solid rgba(255,255,255,0.06)" }}
+            >
+              We offer a <span style={{ color: "#00C9A7", fontWeight: 600 }}>30-day money-back guarantee</span> on all orders. Simply visit your order history, select the item, and click "Start Return." Refunds are processed within 3–5 business days.
             </div>
+          </div>
+          <div className="flex flex-wrap gap-2">
+            {["Start a return", "Track my order", "Contact support"].map((s) => (
+              <button
+                key={s}
+                className="text-xs px-3 py-1.5 rounded-lg"
+                style={{ background: "rgba(255,255,255,0.05)", color: "rgba(255,255,255,0.5)", border: "1px solid rgba(255,255,255,0.08)" }}
+              >
+                {s}
+              </button>
+            ))}
           </div>
         </div>
       </div>
@@ -58,41 +83,70 @@ const features = [
   {
     id: "setup",
     icon: Zap,
-    title: "1-click setup",
-    headline: "Instant setup to power instant answers.",
+    tab: "1-click setup",
+    headline: "Live in under five minutes. No developer needed.",
     description:
-      "Ansera installs in one click from the WordPress Plugin Marketplace and automatically trains on your existing content. No backend changes, no developer needed — just install and go live in under 5 minutes.",
+      "Install directly from the WordPress Plugin Marketplace and Ansera automatically scans, indexes, and trains on your existing content — no backend work, no external AI training, no code.",
     bullets: [
       "Install directly from the WordPress Plugin Marketplace",
-      "Automatically trained on your existing website content",
-      "Styled to match your theme out of the box — no coding required",
+      "Webflow, Wix, and Squarespace supported via code snippet",
+      "Automatically syncs with HTML pages and PDF files",
     ],
     mockup: (
-      <div className="rounded-2xl overflow-hidden" style={{ background: "#0a1520", border: "1px solid rgba(255,255,255,0.08)" }}>
-        <div className="flex items-center gap-2 px-4 py-3" style={{ borderBottom: "1px solid rgba(255,255,255,0.06)", background: "rgba(255,255,255,0.02)" }}>
-          <div className="w-3 h-3 rounded-full" style={{ background: "#ef4444" }} />
-          <div className="w-3 h-3 rounded-full" style={{ background: "#f59e0b" }} />
-          <div className="w-3 h-3 rounded-full" style={{ background: "#22c55e" }} />
-          <span className="ml-3 text-xs" style={{ color: "rgba(255,255,255,0.3)" }}>WordPress Plugin Marketplace</span>
+      <div
+        className="rounded-2xl overflow-hidden"
+        style={{
+          background: "#0a1520",
+          border: "1px solid rgba(0,201,167,0.12)",
+          boxShadow: "0 30px 60px rgba(0,0,0,0.4)",
+        }}
+      >
+        <div
+          className="flex items-center gap-2 px-5 py-3.5"
+          style={{ borderBottom: "1px solid rgba(255,255,255,0.06)", background: "rgba(255,255,255,0.02)" }}
+        >
+          <div className="flex gap-1.5">
+            <div className="w-3 h-3 rounded-full" style={{ background: "#3a3a3a" }} />
+            <div className="w-3 h-3 rounded-full" style={{ background: "#3a3a3a" }} />
+            <div className="w-3 h-3 rounded-full" style={{ background: "#3a3a3a" }} />
+          </div>
+          <span className="ml-3 text-xs" style={{ color: "rgba(255,255,255,0.25)" }}>WordPress Plugin Marketplace</span>
         </div>
-        <div className="p-5 space-y-3">
-          <div className="flex items-center gap-3 p-3 rounded-lg" style={{ background: "rgba(0,201,167,0.06)", border: "1px solid rgba(0,201,167,0.15)" }}>
-            <div className="w-10 h-10 rounded-lg flex items-center justify-center text-lg font-bold" style={{ background: "linear-gradient(135deg, #00C9A7, #00A88C)", color: "#0D1B2A", fontFamily: "'Space Grotesk', sans-serif" }}>A</div>
-            <div className="flex-1">
-              <div className="text-sm font-semibold text-white" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>Ansera Search</div>
-              <div className="text-xs mt-0.5" style={{ color: "rgba(255,255,255,0.4)", fontFamily: "'DM Sans', sans-serif" }}>AI-powered answer engine for your site</div>
+        <div className="p-6 space-y-4">
+          <div
+            className="flex items-center gap-4 p-4 rounded-xl"
+            style={{ background: "rgba(0,201,167,0.06)", border: "1px solid rgba(0,201,167,0.15)" }}
+          >
+            <div
+              className="w-12 h-12 rounded-xl flex items-center justify-center text-lg font-bold flex-shrink-0"
+              style={{ background: "linear-gradient(135deg, #00C9A7, #00A88C)", color: "#0D1B2A", fontFamily: "'Space Grotesk', sans-serif" }}
+            >
+              A
             </div>
-            <div className="px-3 py-1.5 rounded-lg text-xs font-semibold" style={{ background: "linear-gradient(135deg, #00C9A7, #00A88C)", color: "#0D1B2A", fontFamily: "'Space Grotesk', sans-serif" }}>Activate</div>
+            <div className="flex-1">
+              <div className="text-sm font-semibold text-white mb-0.5" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>Ansera Search</div>
+              <div className="text-xs" style={{ color: "rgba(255,255,255,0.4)" }}>AI-powered answer engine · by ansera01</div>
+              <div className="flex mt-1">
+                {[1,2,3,4,5].map(s => <span key={s} style={{ color: "#00C9A7", fontSize: "10px" }}>★</span>)}
+                <span className="text-xs ml-1" style={{ color: "rgba(255,255,255,0.3)" }}>(9)</span>
+              </div>
+            </div>
+            <div
+              className="px-4 py-2 rounded-lg text-xs font-semibold flex-shrink-0"
+              style={{ background: "linear-gradient(135deg, #00C9A7, #00A88C)", color: "#0D1B2A" }}
+            >
+              Activate
+            </div>
           </div>
           <div className="flex items-center gap-2 text-xs" style={{ color: "#00C9A7" }}>
             <div className="w-2 h-2 rounded-full bg-green-400 animate-pulse" />
-            Connected and indexing your content...
+            Scanning and indexing your content...
           </div>
-          <div className="space-y-1.5">
-            {["Blog posts", "Product pages", "Help docs", "Landing pages"].map((item, i) => (
-              <div key={item} className="flex items-center justify-between text-xs py-1">
-                <span style={{ color: "rgba(255,255,255,0.5)" }}>{item}</span>
-                <span style={{ color: "rgba(255,255,255,0.3)" }}>{["142", "89", "234", "18"][i]} pages indexed</span>
+          <div className="space-y-2">
+            {[["Blog posts", "142 pages"], ["Product pages", "89 pages"], ["Help docs", "234 pages"], ["PDFs", "18 files"]].map(([label, count]) => (
+              <div key={label} className="flex items-center justify-between text-xs py-1.5 px-3 rounded-lg" style={{ background: "rgba(255,255,255,0.03)" }}>
+                <span style={{ color: "rgba(255,255,255,0.55)" }}>{label}</span>
+                <span style={{ color: "#00C9A7", fontWeight: 600 }}>{count}</span>
               </div>
             ))}
           </div>
@@ -103,46 +157,58 @@ const features = [
   {
     id: "analytics",
     icon: BarChart3,
-    title: "Content insights",
-    headline: "Evidence-based content insights.",
+    tab: "Content insights",
+    headline: "Know exactly what your visitors want to know.",
     description:
-      "Ansera shows you exactly what your visitors are searching for — including the questions you're not answering. Use real data to close content gaps and improve your SEO strategy.",
+      "Ansera's built-in analytics dashboard shows you every question your visitors are asking — including the ones your content can't answer yet. Use that data to close content gaps and improve SEO.",
     bullets: [
       "View real-time analytics on what users are asking",
       "Spot content gaps based on missed or unsupported queries",
       "Use data to guide your editorial and SEO content strategy",
     ],
     mockup: (
-      <div className="rounded-2xl overflow-hidden" style={{ background: "#0a1520", border: "1px solid rgba(255,255,255,0.08)" }}>
-        <div className="flex items-center justify-between px-4 py-3" style={{ borderBottom: "1px solid rgba(255,255,255,0.06)", background: "rgba(255,255,255,0.02)" }}>
-          <span className="text-xs" style={{ color: "rgba(255,255,255,0.3)" }}>Query Analytics — Last 30 days</span>
-          <span className="text-xs px-2 py-1 rounded-md" style={{ background: "rgba(0,201,167,0.1)", color: "#00C9A7" }}>Live</span>
+      <div
+        className="rounded-2xl overflow-hidden"
+        style={{
+          background: "#0a1520",
+          border: "1px solid rgba(0,201,167,0.12)",
+          boxShadow: "0 30px 60px rgba(0,0,0,0.4)",
+        }}
+      >
+        <div
+          className="flex items-center justify-between px-5 py-3.5"
+          style={{ borderBottom: "1px solid rgba(255,255,255,0.06)", background: "rgba(255,255,255,0.02)" }}
+        >
+          <span className="text-xs" style={{ color: "rgba(255,255,255,0.3)" }}>Analytics Dashboard</span>
+          <span className="text-xs px-2 py-1 rounded-md" style={{ background: "rgba(0,201,167,0.12)", color: "#00C9A7" }}>● Live</span>
         </div>
-        <div className="p-5 space-y-3">
-          <div className="grid grid-cols-3 gap-2 mb-4">
+        <div className="p-6 space-y-4">
+          <div className="grid grid-cols-3 gap-3">
             {[["2,847", "Searches"], ["94%", "Answered"], ["1.2s", "Avg response"]].map(([v, l]) => (
-              <div key={l} className="p-3 rounded-xl text-center" style={{ background: "rgba(255,255,255,0.04)" }}>
-                <div className="text-lg font-bold mb-0.5" style={{ color: "#00C9A7", fontFamily: "'Space Grotesk', sans-serif" }}>{v}</div>
-                <div className="text-xs" style={{ color: "rgba(255,255,255,0.4)" }}>{l}</div>
+              <div key={l} className="p-3 rounded-xl text-center" style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.05)" }}>
+                <div className="text-xl font-bold mb-0.5" style={{ color: "#00C9A7", fontFamily: "'Space Grotesk', sans-serif" }}>{v}</div>
+                <div className="text-xs" style={{ color: "rgba(255,255,255,0.35)" }}>{l}</div>
               </div>
             ))}
           </div>
+          <div className="text-xs font-semibold mb-2" style={{ color: "rgba(255,255,255,0.3)", letterSpacing: "0.1em", textTransform: "uppercase" }}>Top queries this week</div>
           {[
-            { q: "What's your return policy?", count: 342, answered: true },
-            { q: "How do I cancel my subscription?", count: 218, answered: true },
-            { q: "Do you offer bulk discounts?", count: 156, answered: false },
-            { q: "Is there an API available?", count: 89, answered: false },
+            { q: "return policy", count: 342, answered: true },
+            { q: "pricing plans", count: 218, answered: true },
+            { q: "how to integrate", count: 156, answered: true },
+            { q: "bulk discounts", count: 89, answered: false },
           ].map((item) => (
-            <div key={item.q} className="flex items-center justify-between gap-3">
-              <span className="text-xs flex-1 truncate" style={{ color: "rgba(255,255,255,0.65)" }}>{item.q}</span>
-              <div className="flex items-center gap-2 flex-shrink-0">
-                <span className="text-xs" style={{ color: "rgba(255,255,255,0.35)" }}>{item.count}</span>
-                <div className={`w-2 h-2 rounded-full ${item.answered ? "bg-green-400" : "bg-red-400"}`} />
-              </div>
+            <div key={item.q} className="flex items-center justify-between gap-3 py-1.5">
+              <span className="text-sm flex-1" style={{ color: "rgba(255,255,255,0.65)" }}>{item.q}</span>
+              <span className="text-xs" style={{ color: "rgba(255,255,255,0.3)" }}>{item.count}</span>
+              <div
+                className="w-2 h-2 rounded-full flex-shrink-0"
+                style={{ background: item.answered ? "#22c55e" : "rgba(255,255,255,0.2)" }}
+              />
             </div>
           ))}
           <div className="pt-2 text-xs" style={{ color: "rgba(255,255,255,0.3)", borderTop: "1px solid rgba(255,255,255,0.06)" }}>
-            2 unanswered queries — <span style={{ color: "#00C9A7" }}>create content to fill gaps →</span>
+            1 unanswered query — <span style={{ color: "#00C9A7" }}>create content to fill gap →</span>
           </div>
         </div>
       </div>
@@ -151,43 +217,74 @@ const features = [
   {
     id: "customize",
     icon: Sliders,
-    title: "No-code customization",
-    headline: "Flexible configuration — no coding needed.",
+    tab: "No-code customization",
+    headline: "Style it your way. No code, no complexity.",
     description:
-      "Style Ansera as a search icon, chatbot, or footer widget. Match your brand colors and fonts, set default questions to guide visitors, and update everything from a point-and-click dashboard.",
+      "Ansera works right out of the box, but gives you full point-and-click control over how it looks and behaves on your site. Match your brand identity in minutes.",
     bullets: [
-      "Style as a search icon, chatbot widget, or footer bar",
+      "Choose from search icon, chat widget, or footer bar display styles",
       "Revise colors and fonts to match your brand identity",
-      "Set up to 5 default questions to guide users toward key information",
+      "Set up to 5 default questions to guide visitors",
     ],
     mockup: (
-      <div className="rounded-2xl overflow-hidden" style={{ background: "#0a1520", border: "1px solid rgba(255,255,255,0.08)" }}>
-        <div className="px-4 py-3" style={{ borderBottom: "1px solid rgba(255,255,255,0.06)", background: "rgba(255,255,255,0.02)" }}>
+      <div
+        className="rounded-2xl overflow-hidden"
+        style={{
+          background: "#0a1520",
+          border: "1px solid rgba(0,201,167,0.12)",
+          boxShadow: "0 30px 60px rgba(0,0,0,0.4)",
+        }}
+      >
+        <div
+          className="px-5 py-3.5"
+          style={{ borderBottom: "1px solid rgba(255,255,255,0.06)", background: "rgba(255,255,255,0.02)" }}
+        >
           <span className="text-xs" style={{ color: "rgba(255,255,255,0.3)" }}>Appearance Settings</span>
         </div>
-        <div className="p-5 space-y-4">
+        <div className="p-6 space-y-5">
           <div>
-            <div className="text-xs mb-2" style={{ color: "rgba(255,255,255,0.4)" }}>Widget Style</div>
+            <div className="text-xs mb-3 font-medium" style={{ color: "rgba(255,255,255,0.4)" }}>Widget Style</div>
             <div className="flex gap-2">
               {["Search Icon", "Chat Widget", "Footer Bar"].map((style, i) => (
-                <button key={style} className="px-3 py-1.5 rounded-lg text-xs font-medium" style={{ background: i === 1 ? "rgba(0,201,167,0.15)" : "rgba(255,255,255,0.05)", color: i === 1 ? "#00C9A7" : "rgba(255,255,255,0.5)", border: i === 1 ? "1px solid rgba(0,201,167,0.3)" : "1px solid rgba(255,255,255,0.08)" }}>
+                <button
+                  key={style}
+                  className="px-3 py-2 rounded-lg text-xs font-medium"
+                  style={{
+                    background: i === 0 ? "rgba(0,201,167,0.15)" : "rgba(255,255,255,0.04)",
+                    color: i === 0 ? "#00C9A7" : "rgba(255,255,255,0.4)",
+                    border: i === 0 ? "1px solid rgba(0,201,167,0.3)" : "1px solid rgba(255,255,255,0.07)",
+                  }}
+                >
                   {style}
                 </button>
               ))}
             </div>
           </div>
           <div>
-            <div className="text-xs mb-2" style={{ color: "rgba(255,255,255,0.4)" }}>Brand Color</div>
-            <div className="flex gap-2 items-center">
-              {["#00C9A7", "#3B82F6", "#8B5CF6", "#F59E0B", "#EF4444"].map((color) => (
-                <div key={color} className="w-6 h-6 rounded-full cursor-pointer" style={{ background: color, outline: color === "#00C9A7" ? "2px solid white" : "none", outlineOffset: "2px" }} />
+            <div className="text-xs mb-3 font-medium" style={{ color: "rgba(255,255,255,0.4)" }}>Brand Color</div>
+            <div className="flex gap-2.5 items-center">
+              {["#00C9A7", "#3B82F6", "#8B5CF6", "#F59E0B"].map((color, i) => (
+                <div
+                  key={color}
+                  className="w-7 h-7 rounded-full cursor-pointer"
+                  style={{
+                    background: color,
+                    outline: i === 0 ? "2px solid white" : "none",
+                    outlineOffset: "2px",
+                  }}
+                />
               ))}
             </div>
           </div>
           <div>
-            <div className="text-xs mb-2" style={{ color: "rgba(255,255,255,0.4)" }}>Default Questions</div>
-            {["What's your pricing?", "How do I get started?"].map((q) => (
-              <div key={q} className="flex items-center gap-2 mb-1.5 px-3 py-2 rounded-lg text-xs" style={{ background: "rgba(255,255,255,0.04)", color: "rgba(255,255,255,0.6)", border: "1px solid rgba(255,255,255,0.06)" }}>
+            <div className="text-xs mb-3 font-medium" style={{ color: "rgba(255,255,255,0.4)" }}>Default Questions (up to 5)</div>
+            {["What's your pricing?", "How do I get started?", "Do you offer a free trial?"].map((q) => (
+              <div
+                key={q}
+                className="flex items-center gap-2 px-3 py-2.5 rounded-lg mb-2 text-xs"
+                style={{ background: "rgba(255,255,255,0.04)", color: "rgba(255,255,255,0.55)", border: "1px solid rgba(255,255,255,0.06)" }}
+              >
+                <div className="w-1.5 h-1.5 rounded-full flex-shrink-0" style={{ background: "#00C9A7" }} />
                 {q}
               </div>
             ))}
@@ -199,33 +296,48 @@ const features = [
   {
     id: "leads",
     icon: Users,
-    title: "Lead capture",
-    headline: "Capture visitor information.",
+    tab: "Lead capture",
+    headline: "Turn every visitor question into a qualified lead.",
     description:
-      "Turn every interaction into an opportunity. Embed custom lead forms, personalize responses with email templates, and track anonymous visitor data — all without disrupting the user experience.",
+      "Collect viable leads while helping your visitors — by turning every interaction into an opportunity. Ansera captures emails, personalizes responses, and tracks visitor data so your CRM stays full.",
     bullets: [
-      "Embed or integrate custom lead forms within the chat experience",
+      "Embed custom lead forms within the answer flow",
       "Personalize responses with email template customization",
-      "Track anonymous visitor data like IP and location for analytics",
+      "Connect to your CRM or email marketing tool via integrations",
     ],
     mockup: (
-      <div className="rounded-2xl overflow-hidden" style={{ background: "#0a1520", border: "1px solid rgba(255,255,255,0.08)" }}>
-        <div className="px-4 py-3" style={{ borderBottom: "1px solid rgba(255,255,255,0.06)", background: "rgba(255,255,255,0.02)" }}>
-          <span className="text-xs" style={{ color: "rgba(255,255,255,0.3)" }}>Lead Capture — Email Template</span>
+      <div
+        className="rounded-2xl overflow-hidden"
+        style={{
+          background: "#0a1520",
+          border: "1px solid rgba(0,201,167,0.12)",
+          boxShadow: "0 30px 60px rgba(0,0,0,0.4)",
+        }}
+      >
+        <div
+          className="px-5 py-3.5"
+          style={{ borderBottom: "1px solid rgba(255,255,255,0.06)", background: "rgba(255,255,255,0.02)" }}
+        >
+          <span className="text-xs" style={{ color: "rgba(255,255,255,0.3)" }}>Lead Capture Settings</span>
         </div>
-        <div className="p-5 space-y-3">
-          <div className="p-3 rounded-lg text-sm" style={{ background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.06)", color: "rgba(255,255,255,0.7)" }}>
-            "Want to save this conversation? Enter your email and we'll send you a summary."
+        <div className="p-6 space-y-5">
+          <div className="flex items-center justify-between">
+            <span className="text-sm" style={{ color: "rgba(255,255,255,0.65)" }}>Capture visitor emails</span>
+            <div className="w-10 h-6 rounded-full relative" style={{ background: "linear-gradient(135deg, #00C9A7, #00A88C)" }}>
+              <div className="absolute right-1 top-1 w-4 h-4 rounded-full bg-white" />
+            </div>
           </div>
-          <div className="flex gap-2">
-            <input readOnly placeholder="your@email.com" className="flex-1 px-3 py-2 rounded-lg text-xs" style={{ background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.1)", color: "rgba(255,255,255,0.4)" }} />
-            <button className="px-3 py-2 rounded-lg text-xs font-semibold" style={{ background: "linear-gradient(135deg, #00C9A7, #00A88C)", color: "#0D1B2A" }}>Send</button>
+          <div>
+            <div className="text-xs mb-2" style={{ color: "rgba(255,255,255,0.4)" }}>Email capture prompt</div>
+            <div className="px-3 py-2.5 rounded-lg text-xs" style={{ background: "rgba(255,255,255,0.04)", color: "rgba(255,255,255,0.5)", border: "1px solid rgba(255,255,255,0.07)" }}>
+              Enter your email to get your answer instantly
+            </div>
           </div>
-          <div className="grid grid-cols-2 gap-2 pt-1">
-            {[["1,247", "Leads captured"], ["4.2 min", "Avg. session"], ["68%", "Email open rate"], ["+23%", "Conversion lift"]].map(([v, l]) => (
-              <div key={l} className="p-2.5 rounded-lg" style={{ background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.06)" }}>
-                <div className="text-sm font-bold" style={{ color: "#00C9A7", fontFamily: "'Space Grotesk', sans-serif" }}>{v}</div>
-                <div className="text-xs mt-0.5" style={{ color: "rgba(255,255,255,0.35)" }}>{l}</div>
+          <div className="grid grid-cols-3 gap-3 pt-2">
+            {[["1,247", "Leads captured"], ["34%", "Conversion rate"], ["41", "Avg. per day"]].map(([v, l]) => (
+              <div key={l} className="p-3 rounded-xl text-center" style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.05)" }}>
+                <div className="text-lg font-bold mb-0.5" style={{ color: "#00C9A7", fontFamily: "'Space Grotesk', sans-serif" }}>{v}</div>
+                <div className="text-xs" style={{ color: "rgba(255,255,255,0.35)" }}>{l}</div>
               </div>
             ))}
           </div>
@@ -235,38 +347,54 @@ const features = [
   },
   {
     id: "external",
-    icon: FileText,
-    title: "External content",
-    headline: "Augment responses with external content.",
+    icon: Globe,
+    tab: "External content",
+    headline: "Augment answers with content beyond your website.",
     description:
-      "Ansera doesn't just read your web pages. Train it on your YouTube videos, Vimeo recordings, podcasts, PDFs, and documents stored on Dropbox, Google Drive, or Microsoft OneDrive.",
+      "Ansera doesn't just read your web pages. Connect it to your external content library — whitepapers, webinar recordings, pricing tables, presentations — and it will answer from all of it.",
     bullets: [
-      "External video and audio: YouTube, Vimeo, and podcast links",
-      "Documents from Dropbox, Google Drive, and Microsoft OneDrive",
-      "Supports PDF, PPT, DOC, XLS, MP3, and MP4 formats",
+      "External video and audio: YouTube, Vimeo, and podcasts",
+      "Documents on Dropbox, Google Drive, and Microsoft OneDrive",
+      "Support for PDF, PPT, DOC, XLS, MP3, and MP4 file formats",
     ],
     mockup: (
-      <div className="rounded-2xl overflow-hidden" style={{ background: "#0a1520", border: "1px solid rgba(255,255,255,0.08)" }}>
-        <div className="px-4 py-3" style={{ borderBottom: "1px solid rgba(255,255,255,0.06)", background: "rgba(255,255,255,0.02)" }}>
+      <div
+        className="rounded-2xl overflow-hidden"
+        style={{
+          background: "#0a1520",
+          border: "1px solid rgba(0,201,167,0.12)",
+          boxShadow: "0 30px 60px rgba(0,0,0,0.4)",
+        }}
+      >
+        <div
+          className="px-5 py-3.5"
+          style={{ borderBottom: "1px solid rgba(255,255,255,0.06)", background: "rgba(255,255,255,0.02)" }}
+        >
           <span className="text-xs" style={{ color: "rgba(255,255,255,0.3)" }}>External Content Sources</span>
         </div>
-        <div className="p-5 space-y-2">
+        <div className="p-6 space-y-3">
           {[
-            { type: "YouTube", name: "Product Demo Walkthrough", icon: "▶", color: "#ef4444" },
-            { type: "PDF", name: "Enterprise Security Whitepaper", icon: "📄", color: "#f59e0b" },
-            { type: "Google Drive", name: "Pricing & Features Deck", icon: "📊", color: "#3b82f6" },
-            { type: "Podcast", name: "Customer Success Stories", icon: "🎙", color: "#8b5cf6" },
-            { type: "Dropbox", name: "Onboarding Guide v3.pdf", icon: "📦", color: "#0ea5e9" },
+            { label: "PDF Documents", sub: "Dropbox, Google Drive, OneDrive", icon: "📄" },
+            { label: "Video Content", sub: "YouTube, Vimeo embeds", icon: "🎬" },
+            { label: "Podcasts & Audio", sub: "MP3, MP4 audio files", icon: "🎙️" },
+            { label: "Presentations", sub: "PPT, XLS, DOC files", icon: "📊" },
           ].map((item) => (
-            <div key={item.name} className="flex items-center gap-3 p-2.5 rounded-lg" style={{ background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.05)" }}>
-              <span className="text-base">{item.icon}</span>
-              <div className="flex-1 min-w-0">
-                <div className="text-xs font-medium truncate" style={{ color: "rgba(255,255,255,0.75)" }}>{item.name}</div>
-                <div className="text-xs" style={{ color: "rgba(255,255,255,0.3)" }}>{item.type}</div>
+            <div
+              key={item.label}
+              className="flex items-center gap-4 p-3.5 rounded-xl"
+              style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.06)" }}
+            >
+              <div className="text-xl flex-shrink-0">{item.icon}</div>
+              <div className="flex-1">
+                <div className="text-sm font-medium text-white mb-0.5" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>{item.label}</div>
+                <div className="text-xs" style={{ color: "rgba(255,255,255,0.35)" }}>{item.sub}</div>
               </div>
-              <div className="w-2 h-2 rounded-full bg-green-400 flex-shrink-0" />
+              <div className="w-2 h-2 rounded-full flex-shrink-0" style={{ background: "#22c55e" }} />
             </div>
           ))}
+          <div className="pt-2 text-xs text-center" style={{ color: "rgba(255,255,255,0.3)" }}>
+            4 external sources connected · <span style={{ color: "#00C9A7" }}>36 documents indexed</span>
+          </div>
         </div>
       </div>
     ),
@@ -274,106 +402,100 @@ const features = [
 ];
 
 export default function SolutionSection() {
-  const [active, setActive] = useState(features[0].id);
-  const current = features.find(f => f.id === active)!;
+  const [active, setActive] = useState("instant");
+  const current = features.find((f) => f.id === active)!;
 
   return (
     <section
-      className="py-28 relative overflow-hidden"
+      className="py-32 relative overflow-hidden"
       style={{ background: "#0D1B2A" }}
     >
-      {/* Subtle top glow */}
+      {/* Subtle top gradient */}
       <div
-        className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[300px] opacity-10 blur-3xl pointer-events-none"
-        style={{ background: "radial-gradient(ellipse, #00C9A7 0%, transparent 70%)" }}
+        className="absolute top-0 left-0 right-0 h-px"
+        style={{ background: "linear-gradient(90deg, transparent, rgba(0,201,167,0.3), transparent)" }}
       />
 
       <div className="container relative z-10 mx-auto px-6 max-w-7xl">
         {/* Header */}
         <div className="mb-16 reveal">
           <p
-            className="text-xs font-semibold tracking-widest uppercase mb-4"
-            style={{ color: "#00C9A7", letterSpacing: "0.15em" }}
+            className="text-xs font-semibold tracking-widest uppercase mb-5"
+            style={{ color: "#00C9A7", letterSpacing: "0.2em" }}
           >
             The Solution
           </p>
           <h2
-            className="text-4xl lg:text-5xl font-bold text-white leading-[1.05] max-w-2xl"
+            className="text-4xl lg:text-5xl xl:text-6xl font-bold text-white leading-[1.05] max-w-3xl"
             style={{ fontFamily: "'Space Grotesk', sans-serif", letterSpacing: "-0.04em" }}
           >
             Everything your website needs to answer visitors instantly.
           </h2>
         </div>
 
-        {/* Tab + content layout */}
-        <div className="grid lg:grid-cols-[260px_1fr] gap-12 items-start">
-          {/* Left: tab nav */}
-          <div className="space-y-1">
-            {features.map((f) => (
-              <button
-                key={f.id}
-                onClick={() => setActive(f.id)}
-                className="w-full flex items-center gap-4 px-5 py-4 rounded-xl text-left transition-all duration-200"
-                style={{
-                  background: active === f.id ? "rgba(0,201,167,0.08)" : "transparent",
-                  border: active === f.id ? "1px solid rgba(0,201,167,0.2)" : "1px solid transparent",
-                }}
-              >
-                <div
-                  className="w-9 h-9 rounded-lg flex items-center justify-center flex-shrink-0"
-                  style={{
-                    background: active === f.id ? "rgba(0,201,167,0.15)" : "rgba(255,255,255,0.05)",
-                  }}
-                >
-                  <f.icon
-                    size={17}
-                    style={{ color: active === f.id ? "#00C9A7" : "rgba(255,255,255,0.4)" }}
-                  />
-                </div>
-                <span
-                  className="text-sm font-medium"
-                  style={{
-                    color: active === f.id ? "#fff" : "rgba(255,255,255,0.45)",
-                    fontFamily: "'Space Grotesk', sans-serif",
-                  }}
-                >
-                  {f.title}
-                </span>
-                {active === f.id && (
-                  <div className="ml-auto w-1.5 h-1.5 rounded-full flex-shrink-0" style={{ background: "#00C9A7" }} />
-                )}
-              </button>
-            ))}
+        {/* Tab nav */}
+        <div className="flex flex-wrap gap-2 mb-14 reveal">
+          {features.map((f) => (
+            <button
+              key={f.id}
+              onClick={() => setActive(f.id)}
+              className="flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-medium transition-all duration-200"
+              style={{
+                background: active === f.id ? "rgba(0,201,167,0.15)" : "rgba(255,255,255,0.04)",
+                color: active === f.id ? "#00C9A7" : "rgba(255,255,255,0.45)",
+                border: active === f.id ? "1px solid rgba(0,201,167,0.3)" : "1px solid rgba(255,255,255,0.07)",
+                fontFamily: "'Space Grotesk', sans-serif",
+              }}
+            >
+              <f.icon size={14} />
+              {f.tab}
+            </button>
+          ))}
+        </div>
+
+        {/* Content panel */}
+        <div className="grid lg:grid-cols-2 gap-16 items-center">
+          {/* Left: text */}
+          <div>
+            <h3
+              className="text-3xl lg:text-4xl font-bold text-white mb-6 leading-[1.1]"
+              style={{ fontFamily: "'Space Grotesk', sans-serif", letterSpacing: "-0.03em" }}
+            >
+              {current.headline}
+            </h3>
+            <p
+              className="text-base leading-relaxed mb-8"
+              style={{ color: "rgba(255,255,255,0.55)", fontFamily: "'DM Sans', sans-serif" }}
+            >
+              {current.description}
+            </p>
+            <ul className="space-y-3">
+              {current.bullets.map((b) => (
+                <li key={b} className="flex items-start gap-3">
+                  <div
+                    className="w-5 h-5 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5"
+                    style={{ background: "rgba(0,201,167,0.15)" }}
+                  >
+                    <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#00C9A7" strokeWidth="3">
+                      <path d="M20 6L9 17l-5-5" />
+                    </svg>
+                  </div>
+                  <span className="text-sm leading-relaxed" style={{ color: "rgba(255,255,255,0.6)", fontFamily: "'DM Sans', sans-serif" }}>
+                    {b}
+                  </span>
+                </li>
+              ))}
+            </ul>
           </div>
 
-          {/* Right: content */}
-          <div className="grid lg:grid-cols-2 gap-10 items-start">
-            <div>
-              <h3
-                className="text-3xl lg:text-4xl font-bold text-white mb-5 leading-[1.1]"
-                style={{ fontFamily: "'Space Grotesk', sans-serif", letterSpacing: "-0.03em" }}
-              >
-                {current.headline}
-              </h3>
-              <p className="text-base leading-relaxed mb-6" style={{ color: "rgba(255,255,255,0.5)" }}>
-                {current.description}
-              </p>
-              <ul className="space-y-3">
-                {current.bullets.map((b) => (
-                  <li key={b} className="flex items-start gap-3">
-                    <div className="w-5 h-5 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5" style={{ background: "rgba(0,201,167,0.15)" }}>
-                      <svg width="10" height="10" viewBox="0 0 12 12" fill="none">
-                        <path d="M2 6l3 3 5-5" stroke="#00C9A7" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                      </svg>
-                    </div>
-                    <span className="text-sm leading-relaxed" style={{ color: "rgba(255,255,255,0.6)" }}>{b}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-            <div>
-              {current.mockup}
-            </div>
+          {/* Right: mockup */}
+          <div className="relative">
+            {/* Glow behind mockup */}
+            <div
+              className="absolute inset-0 rounded-3xl blur-3xl opacity-20 pointer-events-none"
+              style={{ background: "radial-gradient(circle, #00C9A7 0%, transparent 70%)", transform: "scale(0.8)" }}
+            />
+            {current.mockup}
           </div>
         </div>
       </div>

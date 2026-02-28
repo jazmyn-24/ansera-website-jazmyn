@@ -64,17 +64,17 @@ export default function HeroSection() {
     <section
       className="relative min-h-screen flex items-center overflow-hidden"
       style={{
-        background: "linear-gradient(135deg, #0D1B2A 0%, #0F2035 50%, #0D1B2A 100%)",
+        background: "#080E1A",
         paddingBottom: 0,
       }}
     >
       {/* Background image */}
       <div
-        className="absolute inset-0 opacity-40"
+        className="absolute inset-0 opacity-60"
         style={{
-          backgroundImage: `url(https://d2xsxph8kpxj0f.cloudfront.net/310519663390113999/SS6w9n9Gp9eGiveEMGxHyC/ansera-hero-bg-78Crfg2PWyZaXRUHcBj5nW.webp)`,
+          backgroundImage: `url(https://d2xsxph8kpxj0f.cloudfront.net/310519663390113999/SS6w9n9Gp9eGiveEMGxHyC/ansera-hero-v2-bzwMTBVpqRjNAjZUhMrVKG.webp)`,
           backgroundSize: "cover",
-          backgroundPosition: "center",
+          backgroundPosition: "center top",
         }}
       />
 
@@ -83,7 +83,7 @@ export default function HeroSection() {
         className="absolute inset-0"
         style={{
           background:
-            "linear-gradient(135deg, rgba(13,27,42,0.9) 0%, rgba(13,27,42,0.6) 50%, rgba(13,27,42,0.85) 100%)",
+            "linear-gradient(160deg, rgba(8,14,26,0.92) 0%, rgba(8,14,26,0.55) 45%, rgba(8,14,26,0.88) 100%)",
         }}
       />
 
@@ -112,10 +112,11 @@ export default function HeroSection() {
 
             {/* Headline */}
             <h1
-              className="text-5xl lg:text-6xl xl:text-7xl font-bold text-white leading-[1.05] mb-6"
-              style={{ fontFamily: "'Space Grotesk', sans-serif", letterSpacing: "-0.04em" }}
+              className="text-5xl lg:text-6xl xl:text-[5rem] font-bold text-white leading-[1.02] mb-6"
+              style={{ fontFamily: "'Space Grotesk', sans-serif", letterSpacing: "-0.05em" }}
             >
               Smarter than search.{" "}
+              <br className="hidden lg:block" />
               <span className="text-gradient-teal">Simpler than chatbots.</span>
             </h1>
 
@@ -198,11 +199,11 @@ export default function HeroSection() {
 
             {/* Demo widget */}
             <div
-              className="w-full max-w-md rounded-2xl overflow-hidden"
+              className="w-full max-w-lg rounded-2xl overflow-hidden"
               style={{
-                background: "rgba(255,255,255,0.04)",
-                border: "1px solid rgba(255,255,255,0.1)",
-                boxShadow: "0 25px 60px rgba(0,0,0,0.5), 0 0 0 1px rgba(0,201,167,0.08)",
+                background: "rgba(10,18,32,0.85)",
+                border: "1px solid rgba(0,201,167,0.15)",
+                boxShadow: "0 40px 80px rgba(0,0,0,0.6), 0 0 0 1px rgba(0,201,167,0.1), 0 0 60px rgba(0,201,167,0.08)",
                 backdropFilter: "blur(20px)",
               }}
             >
@@ -240,7 +241,7 @@ export default function HeroSection() {
               </div>
 
               {/* Chat area */}
-              <div className="p-5 min-h-[200px]">
+              <div className="p-6 min-h-[240px]">
                 {/* User question */}
                 <div className="flex justify-end mb-4">
                   <div
