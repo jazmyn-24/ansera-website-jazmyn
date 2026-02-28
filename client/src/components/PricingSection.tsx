@@ -1,6 +1,7 @@
 /*
- * PricingSection — Tiered pricing plans
- * Light background, highlighted popular plan
+ * PricingSection — Real Ansera pricing
+ * Dark background, 4 tiers: Basic (Free), Standard ($49/mo), Pro ($99/mo), Enterprise (Contact)
+ * Real content from ansera.ai/pricing
  */
 
 import { Check, Zap } from "lucide-react";
@@ -8,63 +9,72 @@ import { useState } from "react";
 
 const plans = [
   {
-    name: "Starter",
-    monthlyPrice: 29,
-    annualPrice: 23,
-    description: "Perfect for small websites and blogs getting started with AI search.",
+    name: "Basic",
+    monthlyPrice: "Free",
+    annualPrice: "Free",
+    description: "Get started with AI-powered answers on your website. No credit card required.",
+    queries: "Up to 100 queries/month",
     features: [
-      "Up to 500 pages indexed",
-      "1,000 AI queries/month",
-      "1 website",
-      "Basic analytics",
-      "Email support",
-      "WordPress & Webflow",
+      "One Click WordPress Plugin",
+      "Full Customization",
+      "User Analytics",
     ],
-    cta: "Start Free Trial",
+    cta: "Get Started Free",
     popular: false,
+    isEnterprise: false,
   },
   {
-    name: "Growth",
-    monthlyPrice: 79,
-    annualPrice: 63,
-    description: "For growing businesses that need more power and insights.",
+    name: "Standard",
+    monthlyPrice: 49,
+    annualPrice: 499,
+    description: "For growing websites that need more queries and external media support.",
+    queries: "Up to 500 queries/month",
     features: [
-      "Up to 5,000 pages indexed",
-      "10,000 AI queries/month",
-      "3 websites",
-      "Advanced analytics",
-      "Priority email support",
-      "All platforms supported",
-      "Custom branding",
-      "API access",
+      "One Click WordPress Plugin",
+      "Full Customization",
+      "User Analytics",
+      "External Media Integration (Video, Audio, Documents)",
     ],
-    cta: "Start Free Trial",
+    cta: "Choose Standard",
+    popular: false,
+    isEnterprise: false,
+  },
+  {
+    name: "Pro",
+    monthlyPrice: 99,
+    annualPrice: 999,
+    description: "For high-traffic sites that need maximum query capacity and all features.",
+    queries: "Up to 1,000 queries/month",
+    features: [
+      "One Click WordPress Plugin",
+      "Full Customization",
+      "User Analytics",
+      "External Media Integration (Video, Audio, Documents)",
+    ],
+    cta: "Choose Pro",
     popular: true,
+    isEnterprise: false,
   },
   {
     name: "Enterprise",
-    monthlyPrice: 249,
-    annualPrice: 199,
-    description: "For large teams with advanced security and compliance needs.",
+    monthlyPrice: "Custom",
+    annualPrice: "Custom",
+    description: "For large organizations with custom needs, workflow integrations, and high volume.",
+    queries: "More than 1,000 queries/month",
     features: [
-      "Unlimited pages indexed",
-      "Unlimited AI queries",
-      "Unlimited websites",
-      "Enterprise analytics",
-      "Dedicated support",
-      "All platforms supported",
-      "Custom branding",
-      "Full API access",
-      "SSO & SAML",
-      "SLA guarantee",
+      "All Features of Pro",
+      "Custom Applications",
+      "Workflow Integration",
+      "Dedicated Support",
     ],
-    cta: "Contact Sales",
+    cta: "Contact Us",
     popular: false,
+    isEnterprise: true,
   },
 ];
 
 export default function PricingSection() {
-  const [annual, setAnnual] = useState(true);
+  const [annual, setAnnual] = useState(false);
 
   return (
     <section
@@ -85,13 +95,13 @@ export default function PricingSection() {
             className="text-4xl lg:text-5xl font-bold mb-4 text-white"
             style={{ fontFamily: "'Space Grotesk', sans-serif", letterSpacing: "-0.04em" }}
           >
-            Simple, transparent pricing.
+            Plans that scale as you grow.
           </h2>
           <p
             className="text-lg max-w-xl mx-auto mb-8"
             style={{ color: "rgba(255,255,255,0.5)", lineHeight: 1.7 }}
           >
-            Start free. No credit card required. Upgrade when you're ready.
+            Choose the plan that fits your website needs. Start free — upgrade or downgrade anytime.
           </p>
 
           {/* Billing toggle */}
@@ -102,7 +112,6 @@ export default function PricingSection() {
               style={{
                 background: !annual ? "rgba(255,255,255,0.12)" : "transparent",
                 color: !annual ? "#fff" : "rgba(255,255,255,0.4)",
-                boxShadow: "none",
                 fontFamily: "'Space Grotesk', sans-serif",
               }}
             >
@@ -114,7 +123,6 @@ export default function PricingSection() {
               style={{
                 background: annual ? "rgba(255,255,255,0.12)" : "transparent",
                 color: annual ? "#fff" : "rgba(255,255,255,0.4)",
-                boxShadow: "none",
                 fontFamily: "'Space Grotesk', sans-serif",
               }}
             >
@@ -123,18 +131,18 @@ export default function PricingSection() {
                 className="text-xs px-2 py-0.5 rounded-full font-semibold"
                 style={{ background: "#00C9A7", color: "#0D1B2A" }}
               >
-                Save 20%
+                Save ~15%
               </span>
             </button>
           </div>
         </div>
 
         {/* Pricing cards */}
-        <div className="grid md:grid-cols-3 gap-6 items-start">
+        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-5 items-start">
           {plans.map((plan, i) => (
             <div
               key={plan.name}
-              className={`reveal delay-${(i + 1) * 100} rounded-2xl p-8 relative transition-all duration-300`}
+              className={`reveal delay-${(i + 1) * 100} rounded-2xl p-7 relative transition-all duration-300`}
               style={{
                 background: plan.popular ? "rgba(0,201,167,0.07)" : "rgba(255,255,255,0.03)",
                 border: plan.popular
@@ -143,13 +151,12 @@ export default function PricingSection() {
                 boxShadow: plan.popular
                   ? "0 20px 60px rgba(0,201,167,0.12)"
                   : "none",
-                transform: plan.popular ? "scale(1.02)" : "scale(1)",
               }}
             >
               {/* Popular badge */}
               {plan.popular && (
                 <div
-                  className="absolute -top-4 left-1/2 -translate-x-1/2 flex items-center gap-1.5 px-4 py-1.5 rounded-full text-xs font-bold"
+                  className="absolute -top-4 left-1/2 -translate-x-1/2 flex items-center gap-1.5 px-4 py-1.5 rounded-full text-xs font-bold whitespace-nowrap"
                   style={{
                     background: "linear-gradient(135deg, #00C9A7, #00A88C)",
                     color: "#0D1B2A",
@@ -165,7 +172,7 @@ export default function PricingSection() {
               <div
                 className="text-sm font-semibold mb-2"
                 style={{
-                  color: plan.popular ? "#00C9A7" : "#00A88C",
+                  color: plan.popular ? "#00C9A7" : "rgba(255,255,255,0.6)",
                   fontFamily: "'Space Grotesk', sans-serif",
                 }}
               >
@@ -173,35 +180,63 @@ export default function PricingSection() {
               </div>
 
               {/* Price */}
-              <div className="flex items-end gap-1 mb-2">
-                <span
-                  className="text-5xl font-bold"
-                  style={{
-                    color: "#fff",
-                    fontFamily: "'Space Grotesk', sans-serif",
-                    letterSpacing: "-0.04em",
-                  }}
-                >
-                  ${annual ? plan.annualPrice : plan.monthlyPrice}
-                </span>
-                <span
-                  className="text-sm mb-2"
-                  style={{ color: "rgba(255,255,255,0.45)" }}
-                >
-                  /mo
-                </span>
+              <div className="flex items-end gap-1 mb-1">
+                {plan.isEnterprise || plan.monthlyPrice === "Free" ? (
+                  <span
+                    className="text-4xl font-bold"
+                    style={{
+                      color: "#fff",
+                      fontFamily: "'Space Grotesk', sans-serif",
+                      letterSpacing: "-0.04em",
+                    }}
+                  >
+                    {plan.monthlyPrice === "Free" ? "Free" : "Custom"}
+                  </span>
+                ) : (
+                  <>
+                    <span
+                      className="text-4xl font-bold"
+                      style={{
+                        color: "#fff",
+                        fontFamily: "'Space Grotesk', sans-serif",
+                        letterSpacing: "-0.04em",
+                      }}
+                    >
+                      {annual ? `$${plan.annualPrice}` : `$${plan.monthlyPrice}`}
+                    </span>
+                    <span
+                      className="text-sm mb-1.5"
+                      style={{ color: "rgba(255,255,255,0.45)" }}
+                    >
+                      {annual ? "/yr" : "/mo"}
+                    </span>
+                  </>
+                )}
+              </div>
+
+              {/* Queries */}
+              <div
+                className="text-xs font-medium mb-3 px-2.5 py-1 rounded-lg inline-block"
+                style={{
+                  background: "rgba(0,201,167,0.08)",
+                  color: "#00C9A7",
+                  border: "1px solid rgba(0,201,167,0.15)",
+                  fontFamily: "'Space Grotesk', sans-serif",
+                }}
+              >
+                {plan.queries}
               </div>
 
               <p
-                className="text-sm mb-8 leading-relaxed"
-                style={{ color: "rgba(255,255,255,0.5)" }}
+                className="text-xs mb-6 leading-relaxed"
+                style={{ color: "rgba(255,255,255,0.45)" }}
               >
                 {plan.description}
               </p>
 
               {/* CTA */}
               <button
-                className="w-full py-3.5 rounded-xl text-sm font-semibold mb-8 transition-all duration-200"
+                className="w-full py-3 rounded-xl text-sm font-semibold mb-6 transition-all duration-200"
                 style={{
                   background: plan.popular
                     ? "linear-gradient(135deg, #00C9A7, #00A88C)"
@@ -231,18 +266,18 @@ export default function PricingSection() {
               </button>
 
               {/* Features */}
-              <div className="space-y-3">
+              <div className="space-y-2.5">
                 {plan.features.map((feature) => (
-                  <div key={feature} className="flex items-center gap-3">
+                  <div key={feature} className="flex items-start gap-2.5">
                     <div
-                      className="w-5 h-5 rounded-full flex items-center justify-center flex-shrink-0"
+                      className="w-4 h-4 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5"
                       style={{ background: plan.popular ? "rgba(0,201,167,0.15)" : "rgba(0,201,167,0.1)" }}
                     >
-                      <Check size={11} style={{ color: "#00C9A7" }} />
+                      <Check size={9} style={{ color: "#00C9A7" }} />
                     </div>
                     <span
-                      className="text-sm"
-                      style={{ color: "rgba(255,255,255,0.65)" }}
+                      className="text-xs leading-relaxed"
+                      style={{ color: "rgba(255,255,255,0.6)" }}
                     >
                       {feature}
                     </span>
@@ -255,7 +290,7 @@ export default function PricingSection() {
 
         {/* Footer note */}
         <p className="text-center text-sm mt-10" style={{ color: "rgba(255,255,255,0.3)" }}>
-          All plans include a 14-day free trial. No credit card required.
+          All plans include full customization and user analytics. Upgrade or downgrade anytime.
         </p>
       </div>
     </section>

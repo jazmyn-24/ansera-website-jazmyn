@@ -2,23 +2,24 @@
  * HeroSection — Ansera AI
  * Dark navy with teal accents, animated AI demo widget
  * Split layout: headline left, demo right
+ * Real content from ansera.ai
  */
 
 import { useState, useEffect } from "react";
-import { ArrowRight, Sparkles, MessageSquare, Send } from "lucide-react";
+import { ArrowRight, Sparkles } from "lucide-react";
 
 const DEMO_CONVERSATIONS = [
   {
-    q: "How do I reset my password?",
-    a: "Go to Settings → Security → Change Password. Enter your current password, then your new one. Changes take effect immediately.",
+    q: "What's your return policy?",
+    a: "We offer a 30-day money-back guarantee on all orders. Simply visit your order history, select the item, and click 'Start Return.' Refunds are processed within 3–5 business days.",
   },
   {
-    q: "What's your refund policy?",
-    a: "We offer a 30-day money-back guarantee on all plans. No questions asked. Contact support@ansera.ai to initiate a refund.",
+    q: "How do I upgrade my plan?",
+    a: "Go to your account dashboard, click 'Billing', then 'Change Plan'. Your new plan takes effect immediately and you'll be charged the prorated difference.",
   },
   {
-    q: "Can I integrate with WordPress?",
-    a: "Yes! Install the Ansera plugin from the WordPress directory, add your API key, and you're live in under 5 minutes.",
+    q: "Do you offer a free trial?",
+    a: "Yes! Our Basic plan is completely free — no credit card required. You get up to 100 queries per month to try Ansera on your site.",
   },
 ];
 
@@ -34,7 +35,6 @@ export default function HeroSection() {
       setTypedText("");
       setIsTyping(false);
 
-      // Show question after brief pause
       setTimeout(() => {
         setIsTyping(true);
         const question = DEMO_CONVERSATIONS[currentDemo].q;
@@ -45,7 +45,6 @@ export default function HeroSection() {
           if (i >= question.length) {
             clearInterval(typeInterval);
             setIsTyping(false);
-            // Show answer after question is typed
             setTimeout(() => setShowAnswer(true), 600);
           }
         }, 40);
@@ -108,7 +107,7 @@ export default function HeroSection() {
               }}
             >
               <Sparkles size={14} />
-              AI-Powered Search for Websites
+              AI Answer Engine for Websites
             </div>
 
             {/* Headline */}
@@ -116,14 +115,15 @@ export default function HeroSection() {
               className="text-5xl lg:text-6xl xl:text-7xl font-bold text-white leading-[1.05] mb-6"
               style={{ fontFamily: "'Space Grotesk', sans-serif", letterSpacing: "-0.04em" }}
             >
-Smarter than search.{" "}<span className="text-gradient-teal">Simpler than chatbots.</span>
+              Smarter than search.{" "}
+              <span className="text-gradient-teal">Simpler than chatbots.</span>
             </h1>
 
             <p
               className="text-lg text-white/70 mb-10 leading-relaxed max-w-lg"
               style={{ fontFamily: "'DM Sans', sans-serif" }}
             >
-              Ansera gives your website an AI brain. Visitors ask questions in plain language and get instant, accurate answers — without the complexity of a chatbot.
+              Turn your existing site into an intelligent answer engine that gives visitors exactly what they're looking for — powered by your own content.
             </p>
 
             {/* CTAs */}
@@ -132,7 +132,7 @@ Smarter than search.{" "}<span className="text-gradient-teal">Simpler than chatb
                 className="btn-teal flex items-center gap-2 px-7 py-4 rounded-xl text-base font-semibold"
                 style={{ fontFamily: "'Space Grotesk', sans-serif" }}
               >
-                Start Free Trial
+                Install Free — No Credit Card
                 <ArrowRight size={18} />
               </button>
               <button
@@ -157,12 +157,12 @@ Smarter than search.{" "}<span className="text-gradient-teal">Simpler than chatb
 
             {/* Trust signals */}
             <div className="flex items-center gap-6 flex-wrap">
-              <span className="text-white/40 text-sm">Works with:</span>
+              <span className="text-white/40 text-sm">1-click install on:</span>
               {["WordPress", "Webflow", "Wix", "Squarespace"].map((p) => (
                 <span
                   key={p}
                   className="text-sm font-medium"
-                  style={{ color: "rgba(255,255,255,0.6)" }}
+                  style={{ color: "rgba(255,255,255,0.65)" }}
                 >
                   {p}
                 </span>
@@ -170,75 +170,106 @@ Smarter than search.{" "}<span className="text-gradient-teal">Simpler than chatb
             </div>
           </div>
 
-          {/* Right: AI Demo Widget */}
-          <div className="relative">
+          {/* Right: Animated demo widget */}
+          <div className="relative flex justify-center lg:justify-end">
+            {/* Floating stat badges */}
             <div
-              className="rounded-2xl overflow-hidden"
+              className="absolute -left-4 top-8 px-4 py-2.5 rounded-xl text-sm font-semibold z-20 flex items-center gap-2"
+              style={{
+                background: "rgba(0,201,167,0.15)",
+                border: "1px solid rgba(0,201,167,0.3)",
+                color: "#00C9A7",
+                backdropFilter: "blur(10px)",
+              }}
+            >
+              ↑ More engaged visitors
+            </div>
+            <div
+              className="absolute -right-2 bottom-16 px-4 py-2.5 rounded-xl text-sm font-semibold z-20 flex items-center gap-2"
+              style={{
+                background: "rgba(0,201,167,0.12)",
+                border: "1px solid rgba(0,201,167,0.25)",
+                color: "#00C9A7",
+                backdropFilter: "blur(10px)",
+              }}
+            >
+              ↓ Fewer support tickets
+            </div>
+
+            {/* Demo widget */}
+            <div
+              className="w-full max-w-md rounded-2xl overflow-hidden"
               style={{
                 background: "rgba(255,255,255,0.04)",
                 border: "1px solid rgba(255,255,255,0.1)",
+                boxShadow: "0 25px 60px rgba(0,0,0,0.5), 0 0 0 1px rgba(0,201,167,0.08)",
                 backdropFilter: "blur(20px)",
-                boxShadow: "0 25px 50px rgba(0,0,0,0.4), 0 0 0 1px rgba(0,201,167,0.1)",
               }}
             >
               {/* Widget header */}
               <div
-                className="px-5 py-4 flex items-center gap-3"
-                style={{ borderBottom: "1px solid rgba(255,255,255,0.08)" }}
+                className="flex items-center justify-between px-5 py-4"
+                style={{ borderBottom: "1px solid rgba(255,255,255,0.06)" }}
               >
-                <div className="flex gap-1.5">
-                  <div className="w-3 h-3 rounded-full bg-red-500/60" />
-                  <div className="w-3 h-3 rounded-full bg-yellow-500/60" />
-                  <div className="w-3 h-3 rounded-full bg-green-500/60" />
-                </div>
-                <div className="flex items-center gap-2 ml-2">
-                  <div
-                    className="w-5 h-5 rounded flex items-center justify-center text-xs font-bold"
-                    style={{ background: "linear-gradient(135deg, #00C9A7, #00A88C)", color: "#0D1B2A" }}
-                  >
-                    A
+                <div className="flex items-center gap-3">
+                  <div className="flex gap-1.5">
+                    <div className="w-3 h-3 rounded-full bg-red-500/70" />
+                    <div className="w-3 h-3 rounded-full bg-yellow-500/70" />
+                    <div className="w-3 h-3 rounded-full bg-green-500/70" />
                   </div>
-                  <span className="text-white/60 text-xs font-medium">Ansera AI — Live Demo</span>
+                  <div className="flex items-center gap-2">
+                    <div
+                      className="w-6 h-6 rounded-md flex items-center justify-center text-xs font-bold"
+                      style={{
+                        background: "linear-gradient(135deg, #00C9A7, #00A88C)",
+                        color: "#0D1B2A",
+                        fontFamily: "'Space Grotesk', sans-serif",
+                      }}
+                    >
+                      A
+                    </div>
+                    <span className="text-white/70 text-sm font-medium" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>
+                      Ansera AI — Live Demo
+                    </span>
+                  </div>
                 </div>
-                <div className="ml-auto flex items-center gap-1.5">
+                <div className="flex items-center gap-1.5">
                   <div className="w-2 h-2 rounded-full bg-green-400 animate-pulse" />
-                  <span className="text-green-400 text-xs">Active</span>
+                  <span className="text-xs" style={{ color: "rgba(255,255,255,0.4)" }}>Active</span>
                 </div>
               </div>
 
               {/* Chat area */}
-              <div className="p-5 space-y-4 min-h-64">
+              <div className="p-5 min-h-[200px]">
                 {/* User question */}
-                <div className="flex justify-end">
+                <div className="flex justify-end mb-4">
                   <div
                     className="max-w-xs px-4 py-3 rounded-2xl rounded-tr-sm text-sm"
                     style={{
-                      background: "rgba(0, 201, 167, 0.15)",
-                      border: "1px solid rgba(0, 201, 167, 0.25)",
+                      background: "rgba(0,201,167,0.15)",
                       color: "rgba(255,255,255,0.9)",
+                      fontFamily: "'DM Sans', sans-serif",
                     }}
                   >
                     {typedText}
                     {isTyping && (
                       <span
-                        className="inline-block w-0.5 h-4 ml-0.5 align-middle"
-                        style={{
-                          background: "#00C9A7",
-                          animation: "blink 1s step-end infinite",
-                        }}
+                        className="inline-block w-0.5 h-4 ml-0.5 animate-pulse"
+                        style={{ background: "#00C9A7", verticalAlign: "text-bottom" }}
                       />
                     )}
                   </div>
                 </div>
 
-                {/* AI Answer */}
+                {/* AI answer */}
                 {showAnswer && (
-                  <div className="flex items-start gap-3">
+                  <div className="flex gap-3">
                     <div
-                      className="w-7 h-7 rounded-lg flex items-center justify-center text-xs font-bold flex-shrink-0 mt-0.5"
+                      className="w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold flex-shrink-0 mt-0.5"
                       style={{
                         background: "linear-gradient(135deg, #00C9A7, #00A88C)",
                         color: "#0D1B2A",
+                        fontFamily: "'Space Grotesk', sans-serif",
                       }}
                     >
                       A
@@ -246,9 +277,10 @@ Smarter than search.{" "}<span className="text-gradient-teal">Simpler than chatb
                     <div
                       className="flex-1 px-4 py-3 rounded-2xl rounded-tl-sm text-sm leading-relaxed"
                       style={{
-                        background: "rgba(255,255,255,0.06)",
-                        border: "1px solid rgba(255,255,255,0.1)",
-                        color: "rgba(255,255,255,0.85)",
+                        background: "rgba(255,255,255,0.05)",
+                        color: "rgba(255,255,255,0.8)",
+                        fontFamily: "'DM Sans', sans-serif",
+                        border: "1px solid rgba(255,255,255,0.08)",
                       }}
                     >
                       {DEMO_CONVERSATIONS[currentDemo].a}
@@ -257,60 +289,53 @@ Smarter than search.{" "}<span className="text-gradient-teal">Simpler than chatb
                 )}
               </div>
 
-              {/* Input area */}
+              {/* Input bar */}
               <div
-                className="px-5 py-4"
-                style={{ borderTop: "1px solid rgba(255,255,255,0.08)" }}
+                className="flex items-center gap-3 px-5 py-4"
+                style={{ borderTop: "1px solid rgba(255,255,255,0.06)" }}
               >
                 <div
-                  className="flex items-center gap-3 px-4 py-3 rounded-xl"
+                  className="flex-1 px-4 py-2.5 rounded-xl text-sm"
                   style={{
-                    background: "rgba(255,255,255,0.06)",
-                    border: "1px solid rgba(255,255,255,0.12)",
+                    background: "rgba(255,255,255,0.05)",
+                    color: "rgba(255,255,255,0.3)",
+                    border: "1px solid rgba(255,255,255,0.08)",
+                    fontFamily: "'DM Sans', sans-serif",
                   }}
                 >
-                  <MessageSquare size={16} className="text-white/30" />
-                  <span className="text-white/30 text-sm flex-1">Ask anything...</span>
-                  <button
-                    className="w-7 h-7 rounded-lg flex items-center justify-center transition-all"
-                    style={{ background: "linear-gradient(135deg, #00C9A7, #00A88C)" }}
-                  >
-                    <Send size={13} style={{ color: "#0D1B2A" }} />
-                  </button>
+                  Ask anything...
                 </div>
+                <button
+                  className="w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0"
+                  style={{ background: "linear-gradient(135deg, #00C9A7, #00A88C)" }}
+                >
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#0D1B2A" strokeWidth="2.5">
+                    <path d="M22 2L11 13M22 2L15 22l-4-9-9-4 20-7z" />
+                  </svg>
+                </button>
               </div>
-            </div>
-
-            {/* Floating stat badges */}
-            <div
-              className="absolute -left-6 top-1/4 px-4 py-3 rounded-xl text-sm font-semibold"
-              style={{
-                background: "rgba(13,27,42,0.9)",
-                border: "1px solid rgba(0,201,167,0.3)",
-                color: "#00C9A7",
-                backdropFilter: "blur(10px)",
-                boxShadow: "0 8px 24px rgba(0,0,0,0.3)",
-              }}
-            >
-              ↑ 35% Conversions
-            </div>
-            <div
-              className="absolute -right-6 bottom-1/4 px-4 py-3 rounded-xl text-sm font-semibold"
-              style={{
-                background: "rgba(13,27,42,0.9)",
-                border: "1px solid rgba(0,201,167,0.3)",
-                color: "#00C9A7",
-                backdropFilter: "blur(10px)",
-                boxShadow: "0 8px 24px rgba(0,0,0,0.3)",
-              }}
-            >
-              ↓ 60% Support Tickets
             </div>
           </div>
         </div>
       </div>
 
-
+      <style>{`
+        .text-gradient-teal {
+          background: linear-gradient(135deg, #00C9A7 0%, #00E5C9 100%);
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;
+          background-clip: text;
+        }
+        .btn-teal {
+          background: linear-gradient(135deg, #00C9A7 0%, #00A88C 100%);
+          color: #0D1B2A;
+          transition: all 0.2s ease;
+        }
+        .btn-teal:hover {
+          box-shadow: 0 0 30px rgba(0,201,167,0.4);
+          transform: translateY(-1px);
+        }
+      `}</style>
     </section>
   );
 }

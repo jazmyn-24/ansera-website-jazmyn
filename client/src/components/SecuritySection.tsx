@@ -8,33 +8,33 @@ import { Shield, Lock, Eye, RefreshCw, Server, CheckCircle } from "lucide-react"
 const features = [
   {
     icon: Shield,
-    title: "SOC 2 Type II",
-    description: "Independently audited security controls. Your data is protected to enterprise standards.",
+    title: "Invisible CAPTCHA protection",
+    description: "Invisible Google reCAPTCHA v3 silently blocks bots without disrupting your real visitors' experience.",
   },
   {
     icon: Lock,
-    title: "End-to-end encryption",
-    description: "All data encrypted in transit and at rest using AES-256 and TLS 1.3.",
+    title: "Enterprise-grade security",
+    description: "Ansera is designed with enterprise-grade security at its core — so you can confidently offer AI on your site.",
   },
   {
     icon: Eye,
-    title: "No data training",
-    description: "Your content is never used to train AI models. What's yours stays yours.",
+    title: "No disruption to user flow",
+    description: "Security runs silently in the background. Real visitors never see a CAPTCHA challenge or friction.",
   },
   {
     icon: RefreshCw,
-    title: "GDPR compliant",
-    description: "Full compliance with GDPR, CCPA, and other global privacy regulations.",
+    title: "Your content stays yours",
+    description: "Ansera only answers from your site's content. No data is shared, sold, or used to train external models.",
   },
   {
     icon: Server,
-    title: "99.9% uptime SLA",
-    description: "Enterprise-grade infrastructure with redundancy across multiple regions.",
+    title: "Bot traffic blocked automatically",
+    description: "Only real visitors interact with your content. Automated bots are silently blocked before they reach Ansera.",
   },
   {
     icon: CheckCircle,
-    title: "Role-based access",
-    description: "Fine-grained permissions so the right people have access to the right data.",
+    title: "Confidence at any scale",
+    description: "Whether you're serving thousands of daily users or managing sensitive business content, Ansera keeps you safe.",
   },
 ];
 
@@ -67,18 +67,18 @@ export default function SecuritySection() {
               className="text-4xl lg:text-5xl font-bold text-white leading-[1.05] mb-6"
               style={{ fontFamily: "'Space Grotesk', sans-serif", letterSpacing: "-0.04em" }}
             >
-              Built for teams that can't afford to compromise.
+              Security built with customers first — built for enterprise confidence.
             </h2>
             <p
               className="text-lg leading-relaxed mb-10"
               style={{ color: "rgba(255,255,255,0.5)" }}
             >
-              Enterprise-grade security baked in from day one. Not bolted on after the fact.
+              Ansera is designed with enterprise-grade security at its core, so you can confidently offer AI-powered interaction on your site without sacrificing safety or performance.
             </p>
 
             {/* Trust badges */}
             <div className="flex flex-wrap gap-3">
-              {["SOC 2 Type II", "GDPR", "CCPA", "HIPAA Ready"].map(badge => (
+              {["Invisible reCAPTCHA v3", "Bot Protection", "Enterprise Security", "No Data Sharing"].map(badge => (
                 <div
                   key={badge}
                   className="px-4 py-2 rounded-lg text-xs font-semibold"

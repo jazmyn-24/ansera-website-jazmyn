@@ -1,28 +1,26 @@
 /*
  * ProblemSection — Linear.app-inspired
  * Dark background, large left-aligned headline, stat cards on right
+ * Real content from ansera.ai
  */
 
-import { TrendingDown, MessageSquareX, DollarSign } from "lucide-react";
+import { Search, Bot, TrendingDown } from "lucide-react";
 
 const problems = [
   {
+    icon: Search,
+    title: "Traditional website search is broken",
+    detail: "Traditional website search just dumps a list of links for visitors to sort through themselves. Visitors that can't find answers quickly leave in frustration — leading to lost revenue.",
+  },
+  {
+    icon: Bot,
+    title: "Chatbots are pushy & clunky",
+    detail: "Nobody likes being bombarded by a salesperson the second they enter a website. The only thing that makes a chatbot experience worse is when it can only answer three pre-canned questions.",
+  },
+  {
     icon: TrendingDown,
-    stat: "68%",
-    label: "of visitors leave after a failed search",
-    detail: "Every failed search is a visitor permanently lost to a competitor.",
-  },
-  {
-    icon: MessageSquareX,
-    stat: "4.2×",
-    label: "more support tickets from poor search",
-    detail: "Your team spends hours answering questions your site should handle.",
-  },
-  {
-    icon: DollarSign,
-    stat: "$2.1M",
-    label: "average annual revenue lost to poor UX",
-    detail: "Frustrated prospects leave and never come back.",
+    title: "Visitors leave when they can't find answers",
+    detail: "Every failed search is a missed opportunity. Frustrated visitors don't come back — and your competitors are just one click away.",
   },
 ];
 
@@ -61,7 +59,7 @@ export default function ProblemSection() {
               className="text-lg leading-relaxed mb-10"
               style={{ color: "rgba(255,255,255,0.5)" }}
             >
-              Traditional keyword search was built for a different era. Today's visitors expect instant, intelligent answers — not a list of vague results that sends them to your competitor.
+              Traditional keyword search was built for a different era. Today's visitors expect instant, intelligent answers — not a list of vague links that sends them to your competitor.
             </p>
             <div
               className="inline-flex items-center gap-2 text-sm font-medium cursor-pointer"
@@ -74,11 +72,11 @@ export default function ProblemSection() {
             </div>
           </div>
 
-          {/* Right: stat cards */}
+          {/* Right: problem cards */}
           <div className="space-y-4 reveal-right">
             {problems.map((p, i) => (
               <div
-                key={p.stat}
+                key={p.title}
                 className={`reveal delay-${(i + 1) * 100} flex items-start gap-5 p-6 rounded-2xl transition-all duration-300`}
                 style={{
                   background: "rgba(255,255,255,0.03)",
@@ -95,26 +93,18 @@ export default function ProblemSection() {
               >
                 <div
                   className="w-11 h-11 rounded-xl flex items-center justify-center flex-shrink-0"
-                  style={{ background: "rgba(239,68,68,0.1)" }}
+                  style={{ background: "rgba(0,201,167,0.08)" }}
                 >
-                  <p.icon size={20} style={{ color: "#ef4444" }} />
+                  <p.icon size={20} style={{ color: "rgba(255,255,255,0.4)" }} />
                 </div>
                 <div className="flex-1">
-                  <div className="flex items-baseline gap-3 mb-1">
-                    <span
-                      className="text-3xl font-bold"
-                      style={{ color: "#ef4444", fontFamily: "'Space Grotesk', sans-serif", letterSpacing: "-0.03em" }}
-                    >
-                      {p.stat}
-                    </span>
-                    <span
-                      className="text-sm font-medium"
-                      style={{ color: "rgba(255,255,255,0.6)" }}
-                    >
-                      {p.label}
-                    </span>
-                  </div>
-                  <p className="text-sm" style={{ color: "rgba(255,255,255,0.35)" }}>
+                  <h3
+                    className="text-base font-semibold text-white mb-2"
+                    style={{ fontFamily: "'Space Grotesk', sans-serif" }}
+                  >
+                    {p.title}
+                  </h3>
+                  <p className="text-sm leading-relaxed" style={{ color: "rgba(255,255,255,0.45)" }}>
                     {p.detail}
                   </p>
                 </div>

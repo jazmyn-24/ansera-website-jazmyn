@@ -8,8 +8,8 @@ import { useEffect, useRef, useState } from "react";
 const stories = [
   {
     stat: "35%",
-    metric: "increase in conversions",
-    quote: "Ansera transformed how visitors interact with our site. Questions that used to go unanswered now convert.",
+    metric: "increase in lead conversions",
+    quote: "Ansera transformed how visitors interact with our site. Questions that used to go unanswered now convert into leads.",
     name: "Sarah Chen",
     role: "Head of Growth",
     company: "Meridian SaaS",
@@ -18,23 +18,23 @@ const stories = [
   },
   {
     stat: "60%",
-    metric: "reduction in support tickets",
+    metric: "fewer repetitive support tickets",
     quote: "Our support team went from drowning in repetitive questions to focusing on complex, high-value issues.",
     name: "Marcus Webb",
     role: "VP Customer Success",
     company: "Stackline",
     initials: "MW",
-    color: "#7FFFD4",
+    color: "#00C9A7",
   },
   {
     stat: "5 min",
-    metric: "average install time",
-    quote: "I installed it on our Webflow site during a coffee break. By the time I finished my cup, it was live.",
+    metric: "average install time on WordPress",
+    quote: "I installed it on our WordPress site during a coffee break. By the time I finished my cup, it was live and answering questions.",
     name: "Priya Nair",
     role: "Founder",
     company: "Luma Studio",
     initials: "PN",
-    color: "#a78bfa",
+    color: "#00C9A7",
   },
   {
     stat: "4.9/5",
@@ -44,7 +44,7 @@ const stories = [
     role: "CTO",
     company: "Beacon Health",
     initials: "TO",
-    color: "#fbbf24",
+    color: "#00C9A7",
   },
 ];
 
@@ -115,13 +115,13 @@ export default function StatsSection() {
               className="text-xs font-semibold tracking-widest uppercase mb-4"
               style={{ color: "#00C9A7", letterSpacing: "0.15em" }}
             >
-              Real Results
+              Real ROI
             </p>
             <h2
               className="text-4xl lg:text-5xl font-bold text-white leading-[1.05]"
               style={{ fontFamily: "'Space Grotesk', sans-serif", letterSpacing: "-0.04em" }}
             >
-              Trusted by teams who care about every visitor.
+              Real ROI from search that actually works.
             </h2>
           </div>
           <a
@@ -129,7 +129,7 @@ export default function StatsSection() {
             className="text-sm font-medium flex-shrink-0 flex items-center gap-2"
             style={{ color: "#00C9A7" }}
           >
-            Read customer stories
+            See all case studies
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
               <path d="M5 12h14M12 5l7 7-7 7" />
             </svg>
