@@ -8,7 +8,7 @@
  * - Blog resources strip at bottom
  */
 
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { Check, Minus, ChevronDown, ChevronUp, ArrowRight, Zap, Building2, Rocket, Crown } from "lucide-react";
 import { Link } from "wouter";
 import Navbar from "@/components/Navbar";
@@ -385,8 +385,8 @@ export default function Pricing() {
               </thead>
               <tbody>
                 {featureGroups.map((group) => (
-                  <>
-                    <tr key={group.group}>
+                  <React.Fragment key={group.group}>
+                    <tr key={`${group.group}-header`}>
                       <td colSpan={5} className="pt-8 pb-2 text-xs font-bold uppercase tracking-widest" style={{ color: "rgba(255,255,255,0.3)" }}>
                         {group.group}
                       </td>
@@ -400,7 +400,7 @@ export default function Pricing() {
                         <td className="py-3 px-3 text-center"><Cell value={row.enterprise} /></td>
                       </tr>
                     ))}
-                  </>
+                  </React.Fragment>
                 ))}
               </tbody>
             </table>
