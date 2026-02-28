@@ -22,9 +22,9 @@ export default function Navbar() {
 
   const navLinks = [
     { label: "Product", href: "/product", isRoute: true },
+    { label: "Solutions", href: "/solutions", isRoute: true },
     { label: "How It Works", href: "#how-it-works", isRoute: false },
     { label: "Pricing", href: "#pricing", isRoute: false },
-    { label: "Testimonials", href: "#testimonials", isRoute: false },
   ];
 
   const scrollTo = (href: string, isRoute: boolean) => {
