@@ -6,6 +6,7 @@
 
 import { useState, useEffect } from "react";
 import { Menu, X } from "lucide-react";
+import { Link, useLocation } from "wouter";
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
@@ -17,15 +18,22 @@ export default function Navbar() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  const [location] = useLocation();
+
   const navLinks = [
-    { label: "Product", href: "#solution" },
-    { label: "How It Works", href: "#how-it-works" },
-    { label: "Pricing", href: "#pricing" },
-    { label: "Testimonials", href: "#testimonials" },
+    { label: "Product", href: "/product", isRoute: true },
+    { label: "How It Works", href: "#how-it-works", isRoute: false },
+    { label: "Pricing", href: "#pricing", isRoute: false },
+    { label: "Testimonials", href: "#testimonials", isRoute: false },
   ];
 
-  const scrollTo = (href: string) => {
+  const scrollTo = (href: string, isRoute: boolean) => {
     setMobileOpen(false);
+    if (isRoute) return; // handled by Link
+    if (location !== "/") {
+      window.location.href = "/" + href;
+      return;
+    }
     const el = document.querySelector(href);
     if (el) el.scrollIntoView({ behavior: "smooth" });
   };
@@ -64,18 +72,31 @@ export default function Navbar() {
 
         {/* Desktop Nav */}
         <div className="hidden md:flex items-center gap-8">
-          {navLinks.map((link) => (
-            <button
-              key={link.label}
-              onClick={() => scrollTo(link.href)}
-              className="text-sm font-medium transition-colors duration-200"
-              style={{ color: "rgba(255,255,255,0.7)" }}
-              onMouseEnter={(e) => (e.currentTarget.style.color = "#00C9A7")}
-              onMouseLeave={(e) => (e.currentTarget.style.color = "rgba(255,255,255,0.7)")}
-            >
-              {link.label}
-            </button>
-          ))}
+          {navLinks.map((link) =>
+            link.isRoute ? (
+              <Link
+                key={link.label}
+                href={link.href}
+                className="text-sm font-medium transition-colors duration-200"
+                style={{ color: "rgba(255,255,255,0.7)" }}
+                onMouseEnter={(e) => ((e.currentTarget as HTMLElement).style.color = "#00C9A7")}
+                onMouseLeave={(e) => ((e.currentTarget as HTMLElement).style.color = "rgba(255,255,255,0.7)")}
+              >
+                {link.label}
+              </Link>
+            ) : (
+              <button
+                key={link.label}
+                onClick={() => scrollTo(link.href, link.isRoute)}
+                className="text-sm font-medium transition-colors duration-200"
+                style={{ color: "rgba(255,255,255,0.7)" }}
+                onMouseEnter={(e) => (e.currentTarget.style.color = "#00C9A7")}
+                onMouseLeave={(e) => (e.currentTarget.style.color = "rgba(255,255,255,0.7)")}
+              >
+                {link.label}
+              </button>
+            )
+          )}
         </div>
 
         {/* Desktop CTA */}
@@ -111,15 +132,26 @@ export default function Navbar() {
           className="md:hidden px-6 pb-6 flex flex-col gap-4"
           style={{ background: "rgba(13, 27, 42, 0.98)" }}
         >
-          {navLinks.map((link) => (
-            <button
-              key={link.label}
-              onClick={() => scrollTo(link.href)}
-              className="text-left text-white/80 hover:text-white py-2 text-sm font-medium"
-            >
-              {link.label}
-            </button>
-          ))}
+          {navLinks.map((link) =>
+            link.isRoute ? (
+              <Link
+                key={link.label}
+                href={link.href}
+                className="text-left text-white/80 py-2 text-sm font-medium"
+                onClick={() => setMobileOpen(false)}
+              >
+                {link.label}
+              </Link>
+            ) : (
+              <button
+                key={link.label}
+                onClick={() => scrollTo(link.href, link.isRoute)}
+                className="text-left text-white/80 hover:text-white py-2 text-sm font-medium"
+              >
+                {link.label}
+              </button>
+            )
+          )}
           <div className="flex flex-col gap-2 pt-2 border-t border-white/10">
             <button className="text-white/80 py-2 text-sm text-left">Sign In</button>
             <button className="btn-teal py-3 rounded-lg text-sm font-semibold">
