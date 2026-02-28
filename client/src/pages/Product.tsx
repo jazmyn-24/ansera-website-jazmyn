@@ -352,11 +352,10 @@ function ProductHero() {
 
   return (
     <section className="relative overflow-hidden" style={{ background: "#060C16", paddingTop: "80px" }}>
-      {/* BG image */}
-      <div className="absolute inset-0" style={{ backgroundImage: "url(https://images.unsplash.com/photo-1518770660439-4636190af475?w=1800&q=80)", backgroundSize: "cover", backgroundPosition: "center", opacity: 0.18 }} />
-      {/* Teal radial glow */}
-      <div className="absolute inset-0 pointer-events-none" style={{ background: "radial-gradient(ellipse 80% 60% at 70% 50%, rgba(0,201,167,0.07) 0%, transparent 70%)" }} />
-      <div className="absolute inset-0" style={{ background: "linear-gradient(105deg,rgba(6,12,22,0.98) 0%,rgba(6,12,22,0.7) 45%,rgba(6,12,22,0.55) 70%,rgba(6,12,22,0.8) 100%)" }} />
+      {/* CSS-only dot grid */}
+      <div className="absolute inset-0 pointer-events-none" style={{ backgroundImage: "radial-gradient(rgba(0,201,167,0.1) 1px, transparent 1px)", backgroundSize: "40px 40px", opacity: 0.45 }} />
+      {/* Teal radial glows */}
+      <div className="absolute inset-0 pointer-events-none" style={{ background: "radial-gradient(ellipse 70% 60% at 70% 40%, rgba(0,201,167,0.07) 0%, transparent 65%), radial-gradient(ellipse 40% 40% at 20% 70%, rgba(0,80,60,0.05) 0%, transparent 60%)" }} />
       <div className="absolute bottom-0 left-0 right-0 h-48 pointer-events-none" style={{ background: "linear-gradient(to bottom,transparent,#060C16)" }} />
 
       <div className="container relative z-10 mx-auto px-6 max-w-7xl py-28 lg:py-36">

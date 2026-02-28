@@ -68,29 +68,32 @@ export default function HeroSection() {
         paddingBottom: 0,
       }}
     >
-      {/* Background image */}
+      {/* CSS-only deep space background */}
       <div
-        className="absolute inset-0 opacity-60"
+        className="absolute inset-0 pointer-events-none"
         style={{
-          backgroundImage: `url(https://d2xsxph8kpxj0f.cloudfront.net/310519663390113999/SS6w9n9Gp9eGiveEMGxHyC/ansera-hero-v2-bzwMTBVpqRjNAjZUhMrVKG.webp)`,
-          backgroundSize: "cover",
-          backgroundPosition: "center top",
+          background: "radial-gradient(ellipse 80% 70% at 65% 40%, rgba(0,201,167,0.07) 0%, transparent 60%), radial-gradient(ellipse 50% 50% at 20% 70%, rgba(0,100,80,0.05) 0%, transparent 60%)",
         }}
       />
 
-      {/* Gradient overlay */}
+      {/* Subtle dot grid */}
       <div
-        className="absolute inset-0"
+        className="absolute inset-0 pointer-events-none"
         style={{
-          background:
-            "linear-gradient(160deg, rgba(8,14,26,0.92) 0%, rgba(8,14,26,0.55) 45%, rgba(8,14,26,0.88) 100%)",
+          backgroundImage: "radial-gradient(rgba(0,201,167,0.12) 1px, transparent 1px)",
+          backgroundSize: "40px 40px",
+          opacity: 0.4,
         }}
       />
 
-      {/* Teal glow orb */}
+      {/* Teal glow orbs */}
       <div
-        className="absolute top-1/4 right-1/4 w-96 h-96 rounded-full opacity-10 blur-3xl pointer-events-none"
-        style={{ background: "radial-gradient(circle, #00C9A7 0%, transparent 70%)" }}
+        className="absolute top-1/4 right-1/4 w-[500px] h-[500px] rounded-full opacity-[0.07] blur-3xl pointer-events-none"
+        style={{ background: "#00C9A7" }}
+      />
+      <div
+        className="absolute bottom-1/3 left-1/3 w-64 h-64 rounded-full opacity-[0.04] blur-3xl pointer-events-none"
+        style={{ background: "#00C9A7" }}
       />
 
       <div className="container relative z-10 mx-auto px-6 max-w-7xl pt-28 pb-24">

@@ -39,13 +39,11 @@ export default function ProblemSection() {
         }}
       />
 
-      {/* Feature glow background */}
+      {/* CSS-only ambient glow */}
       <div
-        className="absolute inset-0 opacity-30 pointer-events-none"
+        className="absolute inset-0 pointer-events-none"
         style={{
-          backgroundImage: `url(https://d2xsxph8kpxj0f.cloudfront.net/310519663390113999/SS6w9n9Gp9eGiveEMGxHyC/ansera-feature-glow-hwucU7ww6U9X6MeL64ASFP.webp)`,
-          backgroundSize: "cover",
-          backgroundPosition: "center",
+          background: "radial-gradient(ellipse 60% 50% at 80% 50%, rgba(0,201,167,0.05) 0%, transparent 70%)",
         }}
       />
 
