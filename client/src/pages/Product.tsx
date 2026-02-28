@@ -1,550 +1,767 @@
-/*
- * Product Page — Ansera AI
- * Design: Premium editorial dark aesthetic
- * Inspired by linear.app/build and front.com/product
- * Full-bleed hero, alternating split feature sections, dramatic CTA
- * Fonts: Space Grotesk (display) + DM Sans (body)
- * Colors: #080E1A base, #00C9A7 teal accent
+/**
+ * Ansera Product Page
+ * Design: front.com/product layout adapted to Ansera dark teal aesthetic
+ * Structure:
+ *   1. Hero — centered headline + subtitle + CTAs + large product mockup below
+ *   2. Trust bar — "Used by X websites" + platform logos
+ *   3. 3-column value props — "Built to answer visitors instantly"
+ *   4. "How Ansera works" — horizontal pill tabs + large switching screenshot
+ *   5. Left-side vertical tabs — 6 capabilities with interactive mockup on right
+ *   6. Integrations grid
+ *   7. Final CTA
  */
 
-import { useEffect, useRef, useState } from "react";
+import { useState, useEffect, useRef } from "react";
+import { Link } from "wouter";
+import { motion, AnimatePresence } from "framer-motion";
 import {
-  Zap, BarChart3, Sliders, Users, Globe, Shield, ArrowRight, Check, Play,
+  Zap, Settings, BarChart3, Mail, ExternalLink, Shield,
+  CheckCircle2, ArrowRight, Play, ChevronRight,
+  Search, MessageSquare, FileText, Youtube, Upload, Globe
 } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 
-/* ─── Mockup shell ──────────────────────────────────────────── */
-function MockupShell({ title, children }: { title: string; children: React.ReactNode }) {
+// ─── Data ────────────────────────────────────────────────────────────────────
+
+const valueProps = [
+  {
+    icon: Zap,
+    title: "Live in under 5 minutes",
+    desc: "Install the WordPress plugin, connect your site, and Ansera starts indexing your content automatically. No backend work, no AI expertise needed.",
+    link: "See how setup works",
+  },
+  {
+    icon: MessageSquare,
+    title: "Answers from your content",
+    desc: "Ansera reads your actual pages, posts, and docs — then delivers precise, contextual answers. It understands intent, not just keywords.",
+    link: "See how answers work",
+  },
+  {
+    icon: BarChart3,
+    title: "Insights that improve your site",
+    desc: "Every visitor question is a data point. Ansera surfaces content gaps, top queries, and unanswered questions so you can continuously improve.",
+    link: "See analytics",
+  },
+];
+
+const workflowTabs = [
+  {
+    id: "install",
+    label: "Install",
+    headline: "One-click install. Zero configuration.",
+    body: "Install the Ansera plugin from the WordPress Plugin Marketplace in a single click. Ansera automatically scans and indexes your entire site — blog posts, product pages, help docs, PDFs — and starts answering questions immediately. No API keys, no backend setup, no ongoing maintenance.",
+    bullets: [
+      "WordPress Plugin Marketplace install",
+      "Webflow, Wix & Squarespace via code snippet",
+      "Auto-indexes HTML pages and PDF files",
+      "Live in under 5 minutes",
+    ],
+    mockup: "install",
+  },
+  {
+    id: "answers",
+    label: "Instant Answers",
+    headline: "Real answers. Not links. Not guesses.",
+    body: "When a visitor asks a question, Ansera doesn't return a list of links — it reads your content and delivers a direct, accurate answer sourced from your actual pages. Every response cites the source so visitors can verify and explore further.",
+    bullets: [
+      "Understands intent, not just keywords",
+      "Cites the source page for every answer",
+      "Handles follow-up questions in context",
+      "Supports 50+ languages automatically",
+    ],
+    mockup: "answers",
+  },
+  {
+    id: "customize",
+    label: "Customize",
+    headline: "Your brand. Your style. Your widget.",
+    body: "Choose from three widget styles — search icon, chat widget, or footer bar. Set your brand color, configure default questions, and control every aspect of the experience with point-and-click controls. No code required.",
+    bullets: [
+      "Search icon, chat widget, or footer bar",
+      "Custom brand color and typography",
+      "Set up to 5 default suggested questions",
+      "Control placement and behavior",
+    ],
+    mockup: "customize",
+  },
+  {
+    id: "capture",
+    label: "Lead Capture",
+    headline: "Turn questions into qualified leads.",
+    body: "Ansera can ask for a visitor's name and email before or after answering — turning every interaction into a lead opportunity. Configure email notifications, set custom follow-up messages, and sync leads directly to your CRM.",
+    bullets: [
+      "Configurable lead capture forms",
+      "Email notifications for new leads",
+      "Custom follow-up message templates",
+      "CRM integration via webhooks",
+    ],
+    mockup: "capture",
+  },
+  {
+    id: "insights",
+    label: "Insights",
+    headline: "Know exactly what your visitors want.",
+    body: "The Ansera analytics dashboard shows you every question asked, which ones were answered, and which ones exposed content gaps. Use this data to improve your site, fill content holes, and boost SEO.",
+    bullets: [
+      "Full query history and answer rate",
+      "Content gap detection",
+      "Top queries by volume and trend",
+      "Export data for further analysis",
+    ],
+    mockup: "insights",
+  },
+  {
+    id: "external",
+    label: "External Sources",
+    headline: "Answer from beyond your website.",
+    body: "Augment Ansera's knowledge base with external content — PDFs, YouTube videos, Vimeo, podcasts, Google Drive documents, and Dropbox files. Ansera indexes it all and answers from the combined knowledge base.",
+    bullets: [
+      "PDFs, Word docs, and spreadsheets",
+      "YouTube and Vimeo video transcripts",
+      "Google Drive and Dropbox files",
+      "Podcast and audio transcription",
+    ],
+    mockup: "external",
+  },
+];
+
+const integrations = [
+  { name: "WordPress", icon: "W", color: "#21759B" },
+  { name: "Webflow", icon: "Wf", color: "#4353FF" },
+  { name: "Wix", icon: "Wx", color: "#FAAD00" },
+  { name: "Squarespace", icon: "Sq", color: "#ffffff" },
+  { name: "Shopify", icon: "Sh", color: "#96BF48" },
+  { name: "HubSpot", icon: "Hs", color: "#FF7A59" },
+  { name: "Ghost", icon: "Gh", color: "#738A94" },
+  { name: "Framer", icon: "Fr", color: "#0099FF" },
+];
+
+// ─── Mockup Components ────────────────────────────────────────────────────────
+
+function InstallMockup() {
   return (
-    <div className="rounded-2xl overflow-hidden w-full" style={{ background: "rgba(8,16,28,0.95)", border: "1px solid rgba(0,201,167,0.15)", boxShadow: "0 40px 80px rgba(0,0,0,0.5), 0 0 0 1px rgba(0,201,167,0.06), inset 0 1px 0 rgba(255,255,255,0.04)" }}>
-      <div className="flex items-center gap-2 px-5 py-3.5" style={{ borderBottom: "1px solid rgba(255,255,255,0.05)", background: "rgba(255,255,255,0.02)" }}>
-        <div className="flex gap-1.5">
-          {[0,1,2].map(i => <div key={i} className="w-3 h-3 rounded-full" style={{ background: "#2a2a2a" }} />)}
-        </div>
-        <span className="ml-3 text-xs" style={{ color: "rgba(255,255,255,0.2)" }}>{title}</span>
+    <div className="rounded-xl overflow-hidden border" style={{ borderColor: "rgba(0,201,167,0.2)", background: "#0A1628" }}>
+      <div className="flex items-center gap-2 px-4 py-3 border-b" style={{ borderColor: "rgba(255,255,255,0.06)", background: "#060E1C" }}>
+        <div className="w-3 h-3 rounded-full bg-red-500/70" />
+        <div className="w-3 h-3 rounded-full bg-yellow-500/70" />
+        <div className="w-3 h-3 rounded-full bg-green-500/70" />
+        <span className="ml-3 text-xs" style={{ color: "rgba(255,255,255,0.4)" }}>WordPress Plugin Marketplace</span>
       </div>
-      <div className="p-6">{children}</div>
+      <div className="p-6">
+        <div className="flex items-start gap-4 p-4 rounded-lg mb-4" style={{ background: "rgba(0,201,167,0.06)", border: "1px solid rgba(0,201,167,0.15)" }}>
+          <div className="w-12 h-12 rounded-lg flex items-center justify-center text-lg font-bold flex-shrink-0" style={{ background: "rgba(0,201,167,0.15)", color: "#00C9A7" }}>A</div>
+          <div className="flex-1 min-w-0">
+            <div className="flex items-center justify-between mb-1">
+              <span className="font-semibold text-white text-sm">Ansera Search</span>
+              <span className="text-xs px-2 py-0.5 rounded-full" style={{ background: "rgba(0,201,167,0.15)", color: "#00C9A7" }}>v2.4.1</span>
+            </div>
+            <p className="text-xs mb-2" style={{ color: "rgba(255,255,255,0.5)" }}>AI-powered answer engine · by ansera01</p>
+            <div className="flex items-center gap-1 text-yellow-400 text-xs mb-3">
+              {"★★★★★"} <span style={{ color: "rgba(255,255,255,0.4)" }}>(9)</span>
+            </div>
+            <button className="px-4 py-2 rounded-lg text-xs font-semibold transition-all" style={{ background: "#00C9A7", color: "#060C16" }}>
+              Install Now
+            </button>
+          </div>
+        </div>
+        <div className="space-y-2">
+          {[
+            { label: "Blog posts", count: "142 pages", done: true },
+            { label: "Product pages", count: "89 pages", done: true },
+            { label: "Help docs", count: "234 pages", done: false },
+          ].map((item) => (
+            <div key={item.label} className="flex items-center justify-between py-2 px-3 rounded-lg" style={{ background: "rgba(255,255,255,0.03)" }}>
+              <div className="flex items-center gap-2">
+                <div className={`w-4 h-4 rounded-full flex items-center justify-center ${item.done ? "bg-teal-500/20" : "border border-white/20"}`}>
+                  {item.done && <CheckCircle2 size={10} className="text-teal-400" />}
+                </div>
+                <span className="text-xs" style={{ color: "rgba(255,255,255,0.7)" }}>{item.label}</span>
+              </div>
+              <span className="text-xs" style={{ color: "rgba(255,255,255,0.4)" }}>{item.count}</span>
+            </div>
+          ))}
+        </div>
+      </div>
     </div>
   );
 }
 
-function ChatMockup() {
+function AnswersMockup() {
   return (
-    <MockupShell title="ansera-widget.live">
-      <div className="space-y-4">
-        <div className="flex items-center gap-3 px-4 py-3 rounded-xl" style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(0,201,167,0.25)" }}>
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#00C9A7" strokeWidth="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
-          <span className="text-sm" style={{ color: "rgba(255,255,255,0.5)" }}>What's your return policy?</span>
-          <div className="ml-auto w-1.5 h-4 rounded-sm animate-pulse" style={{ background: "#00C9A7" }} />
-        </div>
-        <div className="flex items-start gap-3">
-          <div className="w-7 h-7 rounded-full flex items-center justify-center flex-shrink-0 text-xs font-bold" style={{ background: "linear-gradient(135deg,#00C9A7,#00A88C)", color: "#0D1B2A", fontFamily: "'Space Grotesk',sans-serif" }}>A</div>
-          <div className="flex-1 text-sm leading-relaxed p-4 rounded-xl" style={{ background: "rgba(255,255,255,0.04)", color: "rgba(255,255,255,0.75)", border: "1px solid rgba(255,255,255,0.06)" }}>
-            We offer a <span style={{ color: "#00C9A7", fontWeight: 600 }}>30-day money-back guarantee</span> on all orders. Simply visit your order history, select the item, and click "Start Return." Refunds are processed within 3–5 business days.
-          </div>
-        </div>
-        <div className="flex flex-wrap gap-2 pt-1">
-          {["Start a return","Track my order","Contact support"].map(s => (
-            <button key={s} className="text-xs px-3 py-1.5 rounded-lg" style={{ background: "rgba(255,255,255,0.05)", color: "rgba(255,255,255,0.45)", border: "1px solid rgba(255,255,255,0.08)" }}>{s}</button>
-          ))}
-        </div>
-        <div className="flex items-center gap-2 px-3 py-2.5 rounded-xl text-xs" style={{ background: "rgba(0,201,167,0.06)", border: "1px solid rgba(0,201,167,0.12)", color: "rgba(255,255,255,0.4)" }}>
-          <div className="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse flex-shrink-0" />
-          Sourced from your Returns Policy page
+    <div className="rounded-xl overflow-hidden border" style={{ borderColor: "rgba(0,201,167,0.2)", background: "#0A1628" }}>
+      <div className="flex items-center gap-2 px-4 py-3 border-b" style={{ borderColor: "rgba(255,255,255,0.06)", background: "#060E1C" }}>
+        <div className="w-3 h-3 rounded-full bg-red-500/70" />
+        <div className="w-3 h-3 rounded-full bg-yellow-500/70" />
+        <div className="w-3 h-3 rounded-full bg-green-500/70" />
+        <span className="ml-3 text-xs" style={{ color: "rgba(255,255,255,0.4)" }}>ansera-widget.live</span>
+        <div className="ml-auto flex items-center gap-1.5">
+          <div className="w-2 h-2 rounded-full bg-teal-400 animate-pulse" />
+          <span className="text-xs" style={{ color: "#00C9A7" }}>Active</span>
         </div>
       </div>
-    </MockupShell>
-  );
-}
-
-function SetupMockup() {
-  return (
-    <MockupShell title="WordPress Plugin Marketplace">
-      <div className="space-y-4">
-        <div className="flex items-center gap-4 p-4 rounded-xl" style={{ background: "rgba(0,201,167,0.06)", border: "1px solid rgba(0,201,167,0.15)" }}>
-          <div className="w-12 h-12 rounded-xl flex items-center justify-center text-lg font-bold flex-shrink-0" style={{ background: "linear-gradient(135deg,#00C9A7,#00A88C)", color: "#0D1B2A", fontFamily: "'Space Grotesk',sans-serif" }}>A</div>
-          <div className="flex-1 min-w-0">
-            <div className="text-sm font-semibold text-white mb-0.5" style={{ fontFamily: "'Space Grotesk',sans-serif" }}>Ansera Search</div>
-            <div className="text-xs mb-1" style={{ color: "rgba(255,255,255,0.35)" }}>AI-powered answer engine · by ansera01</div>
-            <div className="flex">{[1,2,3,4,5].map(s => <span key={s} style={{ color: "#00C9A7", fontSize: "10px" }}>★</span>)}<span className="text-xs ml-1" style={{ color: "rgba(255,255,255,0.25)" }}>(9)</span></div>
+      <div className="p-5 space-y-3">
+        <div className="flex justify-end">
+          <div className="px-4 py-2.5 rounded-2xl rounded-tr-sm text-sm max-w-[80%]" style={{ background: "rgba(255,255,255,0.08)", color: "rgba(255,255,255,0.85)" }}>
+            What's your return policy?
           </div>
-          <div className="px-4 py-2 rounded-lg text-xs font-semibold flex-shrink-0" style={{ background: "linear-gradient(135deg,#00C9A7,#00A88C)", color: "#0D1B2A" }}>Activate</div>
         </div>
-        <div className="flex items-center gap-2 text-xs" style={{ color: "#00C9A7" }}>
-          <div className="w-2 h-2 rounded-full bg-green-400 animate-pulse" />
-          Scanning and indexing your content...
-        </div>
-        <div className="space-y-1.5">
-          {[["Blog posts","142 pages"],["Product pages","89 pages"],["Help docs","234 pages"],["PDFs","18 files"]].map(([label,count]) => (
-            <div key={label} className="flex items-center justify-between text-xs py-2 px-3 rounded-lg" style={{ background: "rgba(255,255,255,0.03)" }}>
-              <span style={{ color: "rgba(255,255,255,0.5)" }}>{label}</span>
-              <span style={{ color: "#00C9A7", fontWeight: 600 }}>{count}</span>
+        <div className="flex gap-3">
+          <div className="w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold flex-shrink-0 mt-1" style={{ background: "rgba(0,201,167,0.2)", color: "#00C9A7" }}>A</div>
+          <div className="flex-1">
+            <div className="px-4 py-3 rounded-2xl rounded-tl-sm text-sm" style={{ background: "rgba(0,201,167,0.1)", border: "1px solid rgba(0,201,167,0.2)", color: "rgba(255,255,255,0.85)" }}>
+              We offer a <span style={{ color: "#00C9A7" }}>30-day money-back guarantee</span> on all orders. Simply visit your order history, select the item, and click "Start Return." Refunds are processed within 3–5 business days.
             </div>
-          ))}
-        </div>
-        <div className="text-xs text-center py-2 rounded-lg" style={{ background: "rgba(0,201,167,0.08)", color: "#00C9A7", border: "1px solid rgba(0,201,167,0.15)" }}>
-          ✓ Ready — 483 pages indexed in 4 minutes
-        </div>
-      </div>
-    </MockupShell>
-  );
-}
-
-function AnalyticsMockup() {
-  return (
-    <MockupShell title="Analytics Dashboard · Last 30 days">
-      <div className="space-y-4">
-        <div className="grid grid-cols-3 gap-3">
-          {[["2,847","Searches"],["94%","Answered"],["1.2s","Avg response"]].map(([v,l]) => (
-            <div key={l} className="p-3 rounded-xl text-center" style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.05)" }}>
-              <div className="text-xl font-bold mb-0.5" style={{ color: "#00C9A7", fontFamily: "'Space Grotesk',sans-serif" }}>{v}</div>
-              <div className="text-xs" style={{ color: "rgba(255,255,255,0.3)" }}>{l}</div>
+            <div className="flex gap-2 mt-2 flex-wrap">
+              {["Start a return", "Track my order", "Contact support"].map(a => (
+                <button key={a} className="px-3 py-1 rounded-full text-xs border transition-colors" style={{ borderColor: "rgba(0,201,167,0.3)", color: "#00C9A7" }}>{a}</button>
+              ))}
             </div>
-          ))}
-        </div>
-        <div className="text-xs font-semibold mb-1" style={{ color: "rgba(255,255,255,0.25)", letterSpacing: "0.1em", textTransform: "uppercase" }}>Top queries this week</div>
-        {[{q:"return policy",count:342,answered:true},{q:"pricing plans",count:218,answered:true},{q:"how to integrate",count:156,answered:true},{q:"bulk discounts",count:89,answered:false}].map(item => (
-          <div key={item.q} className="flex items-center justify-between gap-3 py-1.5" style={{ borderBottom: "1px solid rgba(255,255,255,0.04)" }}>
-            <span className="text-sm flex-1" style={{ color: "rgba(255,255,255,0.6)" }}>{item.q}</span>
-            <span className="text-xs" style={{ color: "rgba(255,255,255,0.25)" }}>{item.count}</span>
-            <div className="w-2 h-2 rounded-full flex-shrink-0" style={{ background: item.answered?"#22c55e":"rgba(255,255,255,0.15)" }} />
+            <p className="text-xs mt-2 flex items-center gap-1" style={{ color: "rgba(255,255,255,0.35)" }}>
+              <span className="w-1.5 h-1.5 rounded-full inline-block" style={{ background: "#00C9A7" }} />
+              Sourced from your Returns Policy page
+            </p>
           </div>
-        ))}
-        <div className="pt-1 text-xs" style={{ color: "rgba(255,255,255,0.25)" }}>
-          1 unanswered query — <span style={{ color: "#00C9A7" }}>create content to fill gap →</span>
+        </div>
+        <div className="flex items-center gap-2 px-3 py-2.5 rounded-xl mt-2" style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)" }}>
+          <Search size={14} style={{ color: "rgba(255,255,255,0.3)" }} />
+          <span className="text-sm" style={{ color: "rgba(255,255,255,0.3)" }}>Ask anything...</span>
         </div>
       </div>
-    </MockupShell>
+    </div>
   );
 }
 
 function CustomizeMockup() {
+  const [activeStyle, setActiveStyle] = useState("Search Icon");
+  const styles = ["Search Icon", "Chat Widget", "Footer Bar"];
   return (
-    <MockupShell title="Appearance Settings">
-      <div className="space-y-5">
+    <div className="rounded-xl overflow-hidden border" style={{ borderColor: "rgba(0,201,167,0.2)", background: "#0A1628" }}>
+      <div className="flex items-center gap-2 px-4 py-3 border-b" style={{ borderColor: "rgba(255,255,255,0.06)", background: "#060E1C" }}>
+        <div className="w-3 h-3 rounded-full bg-red-500/70" />
+        <div className="w-3 h-3 rounded-full bg-yellow-500/70" />
+        <div className="w-3 h-3 rounded-full bg-green-500/70" />
+        <span className="ml-3 text-xs" style={{ color: "rgba(255,255,255,0.4)" }}>Appearance Settings</span>
+      </div>
+      <div className="p-5 space-y-4">
         <div>
-          <div className="text-xs mb-3 font-medium" style={{ color: "rgba(255,255,255,0.35)" }}>Widget Style</div>
+          <p className="text-xs font-medium mb-2" style={{ color: "rgba(255,255,255,0.5)" }}>Widget Style</p>
           <div className="flex gap-2">
-            {["Search Icon","Chat Widget","Footer Bar"].map((style,i) => (
-              <button key={style} className="px-3 py-2 rounded-lg text-xs font-medium" style={{ background: i===0?"rgba(0,201,167,0.15)":"rgba(255,255,255,0.04)", color: i===0?"#00C9A7":"rgba(255,255,255,0.35)", border: i===0?"1px solid rgba(0,201,167,0.3)":"1px solid rgba(255,255,255,0.06)" }}>{style}</button>
+            {styles.map(s => (
+              <button key={s} onClick={() => setActiveStyle(s)} className="px-3 py-1.5 rounded-lg text-xs font-medium transition-all" style={activeStyle === s ? { background: "#00C9A7", color: "#060C16" } : { background: "rgba(255,255,255,0.06)", color: "rgba(255,255,255,0.6)" }}>
+                {s}
+              </button>
             ))}
           </div>
         </div>
         <div>
-          <div className="text-xs mb-3 font-medium" style={{ color: "rgba(255,255,255,0.35)" }}>Brand Color</div>
-          <div className="flex gap-2.5">
-            {["#00C9A7","#3B82F6","#8B5CF6","#F59E0B"].map((color,i) => (
-              <div key={color} className="w-7 h-7 rounded-full cursor-pointer" style={{ background: color, outline: i===0?"2px solid rgba(255,255,255,0.6)":"none", outlineOffset: "2px" }} />
-            ))}
+          <p className="text-xs font-medium mb-2" style={{ color: "rgba(255,255,255,0.5)" }}>Brand Color</p>
+          <div className="flex gap-2">
+              {["#00C9A7", "#6366F1", "#F59E0B", "#EF4444", "#3B82F6"].map(c => (
+                <div key={c} className="w-7 h-7 rounded-full cursor-pointer" style={{ background: c, outline: c === "#00C9A7" ? `2px solid ${c}` : "none", outlineOffset: "2px" }} />
+              ))}
           </div>
         </div>
         <div>
-          <div className="text-xs mb-3 font-medium" style={{ color: "rgba(255,255,255,0.35)" }}>Default Questions (up to 5)</div>
-          {["What's your pricing?","How do I get started?","Do you offer a free trial?"].map(q => (
-            <div key={q} className="flex items-center gap-2 px-3 py-2.5 rounded-lg mb-2 text-xs" style={{ background: "rgba(255,255,255,0.03)", color: "rgba(255,255,255,0.5)", border: "1px solid rgba(255,255,255,0.05)" }}>
-              <div className="w-1.5 h-1.5 rounded-full flex-shrink-0" style={{ background: "#00C9A7" }} />{q}
-            </div>
-          ))}
+          <p className="text-xs font-medium mb-2" style={{ color: "rgba(255,255,255,0.5)" }}>Default Questions (up to 5)</p>
+          <div className="space-y-1.5">
+            {["What's your pricing?", "How do I get started?", "Do you offer a free trial?"].map(q => (
+              <div key={q} className="flex items-center gap-2 px-3 py-2 rounded-lg text-xs" style={{ background: "rgba(255,255,255,0.04)", color: "rgba(255,255,255,0.6)" }}>
+                <span className="w-1.5 h-1.5 rounded-full flex-shrink-0" style={{ background: "#00C9A7" }} />
+                {q}
+              </div>
+            ))}
+          </div>
         </div>
       </div>
-    </MockupShell>
+    </div>
   );
 }
 
-function LeadsMockup() {
+function CaptureMockup() {
   return (
-    <MockupShell title="Lead Capture Settings">
-      <div className="space-y-5">
-        <div className="flex items-center justify-between">
-          <span className="text-sm" style={{ color: "rgba(255,255,255,0.6)" }}>Capture visitor emails</span>
-          <div className="w-10 h-6 rounded-full relative" style={{ background: "linear-gradient(135deg,#00C9A7,#00A88C)" }}>
-            <div className="absolute right-1 top-1 w-4 h-4 rounded-full bg-white" />
+    <div className="rounded-xl overflow-hidden border" style={{ borderColor: "rgba(0,201,167,0.2)", background: "#0A1628" }}>
+      <div className="flex items-center gap-2 px-4 py-3 border-b" style={{ borderColor: "rgba(255,255,255,0.06)", background: "#060E1C" }}>
+        <div className="w-3 h-3 rounded-full bg-red-500/70" />
+        <div className="w-3 h-3 rounded-full bg-yellow-500/70" />
+        <div className="w-3 h-3 rounded-full bg-green-500/70" />
+        <span className="ml-3 text-xs" style={{ color: "rgba(255,255,255,0.4)" }}>Lead Capture · ansera-widget.live</span>
+      </div>
+      <div className="p-5 space-y-3">
+        <div className="flex gap-3">
+          <div className="w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold flex-shrink-0" style={{ background: "rgba(0,201,167,0.2)", color: "#00C9A7" }}>A</div>
+          <div className="px-4 py-3 rounded-2xl rounded-tl-sm text-sm" style={{ background: "rgba(0,201,167,0.1)", border: "1px solid rgba(0,201,167,0.2)", color: "rgba(255,255,255,0.85)" }}>
+            Before I answer — would you like me to send this to your email?
           </div>
         </div>
-        <div>
-          <div className="text-xs mb-2" style={{ color: "rgba(255,255,255,0.35)" }}>Email capture prompt</div>
-          <div className="px-3 py-2.5 rounded-lg text-xs" style={{ background: "rgba(255,255,255,0.04)", color: "rgba(255,255,255,0.5)", border: "1px solid rgba(255,255,255,0.06)" }}>Enter your email to get your answer instantly</div>
+        <div className="space-y-2 px-2">
+          <input readOnly className="w-full px-3 py-2.5 rounded-lg text-sm outline-none" style={{ background: "rgba(255,255,255,0.06)", border: "1px solid rgba(255,255,255,0.1)", color: "rgba(255,255,255,0.7)" }} placeholder="Your name" />
+          <input readOnly className="w-full px-3 py-2.5 rounded-lg text-sm outline-none" style={{ background: "rgba(255,255,255,0.06)", border: "1px solid rgba(255,255,255,0.1)", color: "rgba(255,255,255,0.7)" }} placeholder="your@email.com" />
+          <button className="w-full py-2.5 rounded-lg text-sm font-semibold" style={{ background: "#00C9A7", color: "#060C16" }}>
+            Send me the answer →
+          </button>
+          <p className="text-center text-xs" style={{ color: "rgba(255,255,255,0.3)" }}>or <span style={{ color: "#00C9A7", cursor: "pointer" }}>skip and answer now</span></p>
         </div>
-        <div className="grid grid-cols-3 gap-3">
-          {[["1,247","Leads captured"],["34%","Conversion rate"],["41","Avg. per day"]].map(([v,l]) => (
-            <div key={l} className="p-3 rounded-xl text-center" style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.05)" }}>
-              <div className="text-lg font-bold mb-0.5" style={{ color: "#00C9A7", fontFamily: "'Space Grotesk',sans-serif" }}>{v}</div>
-              <div className="text-xs" style={{ color: "rgba(255,255,255,0.3)" }}>{l}</div>
+        <div className="mt-3 pt-3 border-t" style={{ borderColor: "rgba(255,255,255,0.06)" }}>
+          <p className="text-xs font-medium mb-2" style={{ color: "rgba(255,255,255,0.4)" }}>Recent leads captured</p>
+          {[{ name: "Sarah M.", time: "2m ago" }, { name: "James K.", time: "14m ago" }].map(l => (
+            <div key={l.name} className="flex items-center justify-between py-1.5">
+              <div className="flex items-center gap-2">
+                <div className="w-5 h-5 rounded-full flex items-center justify-center text-xs" style={{ background: "rgba(0,201,167,0.15)", color: "#00C9A7" }}>{l.name[0]}</div>
+                <span className="text-xs" style={{ color: "rgba(255,255,255,0.6)" }}>{l.name}</span>
+              </div>
+              <span className="text-xs" style={{ color: "rgba(255,255,255,0.3)" }}>{l.time}</span>
             </div>
           ))}
         </div>
-        <div className="flex items-center gap-2 text-xs" style={{ color: "rgba(255,255,255,0.3)" }}>
-          <div className="w-2 h-2 rounded-full bg-green-400 flex-shrink-0" />
-          Syncing with Mailchimp · 1,247 contacts exported
+      </div>
+    </div>
+  );
+}
+
+function InsightsMockup() {
+  return (
+    <div className="rounded-xl overflow-hidden border" style={{ borderColor: "rgba(0,201,167,0.2)", background: "#0A1628" }}>
+      <div className="flex items-center gap-2 px-4 py-3 border-b" style={{ borderColor: "rgba(255,255,255,0.06)", background: "#060E1C" }}>
+        <div className="w-3 h-3 rounded-full bg-red-500/70" />
+        <div className="w-3 h-3 rounded-full bg-yellow-500/70" />
+        <div className="w-3 h-3 rounded-full bg-green-500/70" />
+        <span className="ml-3 text-xs" style={{ color: "rgba(255,255,255,0.4)" }}>Analytics Dashboard · Live</span>
+      </div>
+      <div className="p-5">
+        <div className="grid grid-cols-3 gap-3 mb-4">
+          {[{ label: "Searches", val: "2,847" }, { label: "Answered", val: "94%" }, { label: "Avg response", val: "1.2s" }].map(s => (
+            <div key={s.label} className="p-3 rounded-lg text-center" style={{ background: "rgba(0,201,167,0.06)", border: "1px solid rgba(0,201,167,0.12)" }}>
+              <div className="text-lg font-bold" style={{ color: "#00C9A7" }}>{s.val}</div>
+              <div className="text-xs mt-0.5" style={{ color: "rgba(255,255,255,0.5)" }}>{s.label}</div>
+            </div>
+          ))}
+        </div>
+        <p className="text-xs font-medium mb-2" style={{ color: "rgba(255,255,255,0.5)" }}>Top queries this week</p>
+        <div className="space-y-2">
+          {[{ q: "return policy", n: 342, w: 90 }, { q: "pricing plans", n: 218, w: 58 }, { q: "how to integrate", n: 156, w: 41 }, { q: "bulk discounts", n: 89, w: 24 }].map(item => (
+            <div key={item.q} className="flex items-center gap-3">
+              <span className="text-xs w-28 truncate" style={{ color: "rgba(255,255,255,0.7)" }}>{item.q}</span>
+              <div className="flex-1 h-1.5 rounded-full overflow-hidden" style={{ background: "rgba(255,255,255,0.06)" }}>
+                <div className="h-full rounded-full" style={{ width: `${item.w}%`, background: "#00C9A7" }} />
+              </div>
+              <span className="text-xs w-8 text-right" style={{ color: "rgba(255,255,255,0.4)" }}>{item.n}</span>
+            </div>
+          ))}
+        </div>
+        <div className="mt-3 pt-3 border-t flex items-center gap-2" style={{ borderColor: "rgba(255,255,255,0.06)" }}>
+          <div className="w-2 h-2 rounded-full bg-yellow-400" />
+          <span className="text-xs" style={{ color: "rgba(255,255,255,0.5)" }}>1 unanswered query — <span style={{ color: "#00C9A7" }}>create content to fill gap →</span></span>
         </div>
       </div>
-    </MockupShell>
+    </div>
   );
 }
 
 function ExternalMockup() {
   return (
-    <MockupShell title="External Content Sources">
-      <div className="space-y-3">
-        {[{label:"PDF Documents",sub:"Dropbox, Google Drive, OneDrive",icon:"📄",active:true},{label:"Video Content",sub:"YouTube, Vimeo embeds",icon:"🎬",active:true},{label:"Podcasts & Audio",sub:"MP3, MP4 audio files",icon:"🎙️",active:true},{label:"Presentations",sub:"PPT, XLS, DOC files",icon:"📊",active:false}].map(item => (
-          <div key={item.label} className="flex items-center gap-4 p-3.5 rounded-xl" style={{ background: "rgba(255,255,255,0.04)", border: `1px solid ${item.active?"rgba(0,201,167,0.12)":"rgba(255,255,255,0.05)"}` }}>
-            <div className="text-xl flex-shrink-0">{item.icon}</div>
-            <div className="flex-1 min-w-0">
-              <div className="text-sm font-medium text-white mb-0.5" style={{ fontFamily: "'Space Grotesk',sans-serif" }}>{item.label}</div>
-              <div className="text-xs" style={{ color: "rgba(255,255,255,0.3)" }}>{item.sub}</div>
+    <div className="rounded-xl overflow-hidden border" style={{ borderColor: "rgba(0,201,167,0.2)", background: "#0A1628" }}>
+      <div className="flex items-center gap-2 px-4 py-3 border-b" style={{ borderColor: "rgba(255,255,255,0.06)", background: "#060E1C" }}>
+        <div className="w-3 h-3 rounded-full bg-red-500/70" />
+        <div className="w-3 h-3 rounded-full bg-yellow-500/70" />
+        <div className="w-3 h-3 rounded-full bg-green-500/70" />
+        <span className="ml-3 text-xs" style={{ color: "rgba(255,255,255,0.4)" }}>External Sources · Knowledge Base</span>
+      </div>
+      <div className="p-5 space-y-3">
+        <p className="text-xs font-medium" style={{ color: "rgba(255,255,255,0.5)" }}>Connected sources</p>
+        {[
+          { icon: FileText, label: "Product Manual v3.pdf", size: "2.4 MB", status: "Indexed" },
+          { icon: Youtube, label: "Getting Started Tutorial", size: "YouTube", status: "Indexed" },
+          { icon: Upload, label: "FAQ Document.docx", size: "Google Drive", status: "Syncing..." },
+          { icon: Globe, label: "Help Center Articles", size: "18 pages", status: "Indexed" },
+        ].map((src) => (
+          <div key={src.label} className="flex items-center gap-3 p-3 rounded-lg" style={{ background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.06)" }}>
+            <div className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0" style={{ background: "rgba(0,201,167,0.1)" }}>
+              <src.icon size={14} style={{ color: "#00C9A7" }} />
             </div>
-            <div className="w-2 h-2 rounded-full flex-shrink-0" style={{ background: item.active?"#22c55e":"rgba(255,255,255,0.15)" }} />
+            <div className="flex-1 min-w-0">
+              <p className="text-xs font-medium truncate" style={{ color: "rgba(255,255,255,0.8)" }}>{src.label}</p>
+              <p className="text-xs" style={{ color: "rgba(255,255,255,0.35)" }}>{src.size}</p>
+            </div>
+            <span className="text-xs px-2 py-0.5 rounded-full flex-shrink-0" style={{ background: src.status === "Indexed" ? "rgba(0,201,167,0.12)" : "rgba(251,191,36,0.12)", color: src.status === "Indexed" ? "#00C9A7" : "#FBBF24" }}>
+              {src.status}
+            </span>
           </div>
         ))}
-        <div className="pt-1 text-xs text-center" style={{ color: "rgba(255,255,255,0.25)" }}>
-          3 sources connected · <span style={{ color: "#00C9A7" }}>36 documents indexed</span>
-        </div>
+        <button className="w-full py-2.5 rounded-lg text-xs font-medium border border-dashed" style={{ borderColor: "rgba(0,201,167,0.3)", color: "#00C9A7" }}>
+          + Add external source
+        </button>
       </div>
-    </MockupShell>
+    </div>
   );
 }
 
-/* ─── Feature sections data ─────────────────────────────────── */
-const featureData = [
-  {
-    id: "answers",
-    icon: Zap,
-    eyebrow: "Core Intelligence",
-    headline: "Real answers from your content.\nNot generic AI guesses.",
-    body: "Ansera reads and understands your website's actual content — product pages, blog posts, help docs — and delivers precise, contextual answers in real time. It understands intent, not just keywords.",
-    bullets: ["Real-time content analysis and intelligent response generation","Understands visitor intent — not just keyword matching","Trains on external content: PDFs, YouTube, Vimeo, podcasts"],
-    mockup: <ChatMockup />,
-    flip: false,
-    bg: "#080E1A",
-  },
-  {
-    id: "setup",
-    icon: Zap,
-    eyebrow: "Instant Setup",
-    headline: "Live in under five minutes.\nNo developer needed.",
-    body: "Install directly from the WordPress Plugin Marketplace and Ansera automatically scans, indexes, and trains on your existing content. No backend work, no external AI training, no code.",
-    bullets: ["Install directly from the WordPress Plugin Marketplace","Webflow, Wix, and Squarespace supported via code snippet","Automatically syncs with HTML pages and PDF files"],
-    mockup: <SetupMockup />,
-    flip: true,
-    bg: "#0C1624",
-  },
-  {
-    id: "analytics",
-    icon: BarChart3,
-    eyebrow: "Content Intelligence",
-    headline: "Know exactly what your\nvisitors want to know.",
-    body: "Ansera's built-in analytics dashboard shows you every question your visitors are asking — including the ones your content can't answer yet. Use that data to close content gaps and improve SEO.",
-    bullets: ["View real-time analytics on what users are asking","Spot content gaps based on missed or unsupported queries","Use data to guide your editorial and SEO content strategy"],
-    mockup: <AnalyticsMockup />,
-    flip: false,
-    bg: "#080E1A",
-  },
-  {
-    id: "customize",
-    icon: Sliders,
-    eyebrow: "No-Code Customization",
-    headline: "Style it your way.\nNo code, no complexity.",
-    body: "Ansera works right out of the box, but gives you full point-and-click control over how it looks and behaves on your site. Match your brand identity in minutes.",
-    bullets: ["Choose from search icon, chat widget, or footer bar display styles","Revise colors and fonts to match your brand identity","Set up to 5 default questions to guide visitors"],
-    mockup: <CustomizeMockup />,
-    flip: true,
-    bg: "#0C1624",
-  },
-  {
-    id: "leads",
-    icon: Users,
-    eyebrow: "Lead Capture",
-    headline: "Turn every visitor question\ninto a qualified lead.",
-    body: "Collect viable leads while helping your visitors — by turning every interaction into an opportunity. Ansera captures emails, personalizes responses, and tracks visitor data so your CRM stays full.",
-    bullets: ["Embed custom lead forms within the answer flow","Personalize responses with email template customization","Connect to your CRM or email marketing tool via integrations"],
-    mockup: <LeadsMockup />,
-    flip: false,
-    bg: "#080E1A",
-  },
-  {
-    id: "external",
-    icon: Globe,
-    eyebrow: "External Content",
-    headline: "Augment answers with content\nbeyond your website.",
-    body: "Ansera doesn't just read your web pages. Connect it to your external content library — whitepapers, webinar recordings, pricing tables, presentations — and it will answer from all of it.",
-    bullets: ["External video and audio: YouTube, Vimeo, and podcasts","Documents on Dropbox, Google Drive, and Microsoft OneDrive","Support for PDF, PPT, DOC, XLS, MP3, and MP4 file formats"],
-    mockup: <ExternalMockup />,
-    flip: true,
-    bg: "#0C1624",
-  },
-];
+const mockupMap: Record<string, React.ReactElement> = {
+  install: <InstallMockup />,
+  answers: <AnswersMockup />,
+  customize: <CustomizeMockup />,
+  capture: <CaptureMockup />,
+  insights: <InsightsMockup />,
+  external: <ExternalMockup />,
+};
 
-/* ─── Feature section component ─────────────────────────────── */
-function FeatureSection({ feature, index }: { feature: typeof featureData[0]; index: number }) {
-  const ref = useRef<HTMLDivElement>(null);
-  const [visible, setVisible] = useState(false);
+// ─── Hero Mockup ──────────────────────────────────────────────────────────────
+
+function HeroMockup() {
+  const [activeTab, setActiveTab] = useState(0);
+  const tabs = ["Escalations", "Handoffs", "Workflows", "Insights"];
 
   useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => { if (entry.isIntersecting) { setVisible(true); observer.disconnect(); } },
-      { threshold: 0.12 }
-    );
-    if (ref.current) observer.observe(ref.current);
-    return () => observer.disconnect();
+    const interval = setInterval(() => setActiveTab(t => (t + 1) % tabs.length), 2500);
+    return () => clearInterval(interval);
   }, []);
 
   return (
-    <section
-      ref={ref}
-      className="relative overflow-hidden"
-      style={{ background: feature.bg, borderTop: "1px solid rgba(255,255,255,0.04)" }}
-    >
-      {/* Ambient glow */}
-      <div className="absolute pointer-events-none" style={{ width: "700px", height: "700px", borderRadius: "50%", background: "radial-gradient(circle,rgba(0,201,167,0.05) 0%,transparent 70%)", top: "50%", left: feature.flip?"auto":"-15%", right: feature.flip?"-15%":"auto", transform: "translateY(-50%)" }} />
-
-      <div className="container relative z-10 mx-auto px-6 max-w-7xl py-28 lg:py-36">
-        <div className={`grid lg:grid-cols-2 gap-16 lg:gap-24 items-center ${feature.flip?"lg:[&>*:first-child]:order-2":""}`}>
-
-          {/* Text side */}
-          <div style={{ opacity: visible?1:0, transform: visible?"translateY(0)":"translateY(32px)", transition: "opacity 0.7s ease, transform 0.7s ease" }}>
-            {/* Eyebrow */}
-            <div className="flex items-center gap-3 mb-7">
-              <div className="w-8 h-8 rounded-lg flex items-center justify-center" style={{ background: "rgba(0,201,167,0.12)", border: "1px solid rgba(0,201,167,0.2)" }}>
-                <feature.icon size={15} style={{ color: "#00C9A7" }} />
-              </div>
-              <span className="text-xs font-semibold tracking-widest uppercase" style={{ color: "#00C9A7", letterSpacing: "0.15em", fontFamily: "'Space Grotesk',sans-serif" }}>{feature.eyebrow}</span>
+    <div className="w-full max-w-4xl mx-auto">
+      {/* Browser chrome */}
+      <div className="rounded-2xl overflow-hidden shadow-2xl" style={{ border: "1px solid rgba(0,201,167,0.2)", background: "#0A1628", boxShadow: "0 40px 80px rgba(0,0,0,0.5), 0 0 60px rgba(0,201,167,0.08)" }}>
+        {/* Title bar */}
+        <div className="flex items-center gap-2 px-5 py-3.5 border-b" style={{ borderColor: "rgba(255,255,255,0.06)", background: "#060E1C" }}>
+          <div className="w-3 h-3 rounded-full bg-red-500/70" />
+          <div className="w-3 h-3 rounded-full bg-yellow-500/70" />
+          <div className="w-3 h-3 rounded-full bg-green-500/70" />
+          <div className="flex-1 mx-4">
+            <div className="mx-auto max-w-xs px-3 py-1 rounded-md text-xs text-center" style={{ background: "rgba(255,255,255,0.05)", color: "rgba(255,255,255,0.4)" }}>
+              ansera-dashboard.app
             </div>
-
-            {/* Headline — newlines become <br> */}
-            <h2 className="text-3xl lg:text-4xl xl:text-5xl font-bold text-white mb-6 leading-[1.08]" style={{ fontFamily: "'Space Grotesk',sans-serif", letterSpacing: "-0.04em" }}>
-              {feature.headline.split("\n").map((line, i) => (
-                <span key={i}>{line}{i < feature.headline.split("\n").length - 1 && <br />}</span>
-              ))}
-            </h2>
-
-            {/* Body */}
-            <p className="text-base lg:text-lg leading-relaxed mb-10" style={{ color: "rgba(255,255,255,0.5)", fontFamily: "'DM Sans',sans-serif", maxWidth: "480px" }}>{feature.body}</p>
-
-            {/* Bullets */}
-            <ul className="space-y-3.5">
-              {feature.bullets.map(b => (
-                <li key={b} className="flex items-start gap-3.5">
-                  <div className="w-5 h-5 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5" style={{ background: "rgba(0,201,167,0.12)", border: "1px solid rgba(0,201,167,0.2)" }}>
-                    <Check size={10} style={{ color: "#00C9A7" }} strokeWidth={3} />
-                  </div>
-                  <span className="text-sm leading-relaxed" style={{ color: "rgba(255,255,255,0.55)", fontFamily: "'DM Sans',sans-serif" }}>{b}</span>
-                </li>
-              ))}
-            </ul>
           </div>
-
-          {/* Mockup side */}
-          <div className="relative" style={{ opacity: visible?1:0, transform: visible?"translateY(0)":"translateY(40px)", transition: "opacity 0.7s ease 0.15s, transform 0.7s ease 0.15s" }}>
-            <div className="absolute inset-0 rounded-3xl pointer-events-none" style={{ background: "radial-gradient(circle at 50% 50%,rgba(0,201,167,0.1) 0%,transparent 65%)", transform: "scale(1.15)", filter: "blur(40px)" }} />
-            <div className="relative">{feature.mockup}</div>
+          <div className="flex items-center gap-1.5">
+            <div className="w-2 h-2 rounded-full bg-teal-400 animate-pulse" />
+            <span className="text-xs" style={{ color: "#00C9A7" }}>Live</span>
           </div>
         </div>
-      </div>
-    </section>
-  );
-}
 
-/* ─── Hero ──────────────────────────────────────────────────── */
-function ProductHero() {
-  const [visible, setVisible] = useState(false);
-  useEffect(() => { setTimeout(() => setVisible(true), 100); }, []);
-
-  return (
-    <section className="relative overflow-hidden" style={{ background: "#060C16", paddingTop: "80px" }}>
-      {/* CSS-only dot grid */}
-      <div className="absolute inset-0 pointer-events-none" style={{ backgroundImage: "radial-gradient(rgba(0,201,167,0.1) 1px, transparent 1px)", backgroundSize: "40px 40px", opacity: 0.45 }} />
-      {/* Teal radial glows */}
-      <div className="absolute inset-0 pointer-events-none" style={{ background: "radial-gradient(ellipse 70% 60% at 70% 40%, rgba(0,201,167,0.07) 0%, transparent 65%), radial-gradient(ellipse 40% 40% at 20% 70%, rgba(0,80,60,0.05) 0%, transparent 60%)" }} />
-      <div className="absolute bottom-0 left-0 right-0 h-48 pointer-events-none" style={{ background: "linear-gradient(to bottom,transparent,#060C16)" }} />
-
-      <div className="container relative z-10 mx-auto px-6 max-w-7xl py-28 lg:py-36">
-        <div className="max-w-3xl">
-          {/* Badge */}
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-xs font-semibold mb-8" style={{ background: "rgba(0,201,167,0.1)", border: "1px solid rgba(0,201,167,0.25)", color: "#00C9A7", fontFamily: "'Space Grotesk',sans-serif", opacity: visible?1:0, transform: visible?"translateY(0)":"translateY(16px)", transition: "opacity 0.6s ease, transform 0.6s ease" }}>
-            <Zap size={12} />
-            WordPress Plugin · Also available for Webflow, Wix & Squarespace
-          </div>
-
-          {/* Headline */}
-          <h1 className="text-5xl lg:text-6xl xl:text-7xl font-bold text-white leading-[1.02] mb-8" style={{ fontFamily: "'Space Grotesk',sans-serif", letterSpacing: "-0.05em", opacity: visible?1:0, transform: visible?"translateY(0)":"translateY(20px)", transition: "opacity 0.7s ease 0.1s, transform 0.7s ease 0.1s" }}>
-            Everything you need to{" "}
-            <span style={{ background: "linear-gradient(135deg,#00C9A7 0%,#7FFFD4 100%)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text" }}>
-              answer visitors instantly.
-            </span>
-          </h1>
-
-          {/* Sub */}
-          <p className="text-lg lg:text-xl leading-relaxed mb-12" style={{ color: "rgba(255,255,255,0.5)", fontFamily: "'DM Sans',sans-serif", maxWidth: "540px", opacity: visible?1:0, transform: visible?"translateY(0)":"translateY(20px)", transition: "opacity 0.7s ease 0.2s, transform 0.7s ease 0.2s" }}>
-            Six powerful capabilities that turn your website into an intelligent answer engine — with no code, no AI expertise, and no ongoing maintenance.
-          </p>
-
-          {/* CTAs */}
-          <div className="flex flex-wrap gap-4" style={{ opacity: visible?1:0, transform: visible?"translateY(0)":"translateY(20px)", transition: "opacity 0.7s ease 0.3s, transform 0.7s ease 0.3s" }}>
-            <a href="https://wordpress.org/plugins/ansera" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 px-7 py-3.5 rounded-xl text-sm font-semibold" style={{ background: "linear-gradient(135deg,#00C9A7,#00A88C)", color: "#060C16", fontFamily: "'Space Grotesk',sans-serif", boxShadow: "0 0 30px rgba(0,201,167,0.3)" }}>
-              Install Free on WordPress <ArrowRight size={16} />
-            </a>
-            <button className="inline-flex items-center gap-2 px-7 py-3.5 rounded-xl text-sm font-semibold" style={{ background: "rgba(255,255,255,0.06)", color: "rgba(255,255,255,0.8)", border: "1px solid rgba(255,255,255,0.12)", fontFamily: "'Space Grotesk',sans-serif" }}>
-              <Play size={14} /> Watch demo
+        {/* Tab row */}
+        <div className="flex border-b px-5" style={{ borderColor: "rgba(255,255,255,0.06)" }}>
+          {tabs.map((tab, i) => (
+            <button
+              key={tab}
+              onClick={() => setActiveTab(i)}
+              className="px-4 py-3 text-xs font-medium transition-all border-b-2"
+              style={activeTab === i ? { color: "#00C9A7", borderColor: "#00C9A7" } : { color: "rgba(255,255,255,0.4)", borderColor: "transparent" }}
+            >
+              {tab}
             </button>
-          </div>
+          ))}
         </div>
-      </div>
 
-      {/* Feature strip */}
-      <div style={{ borderTop: "1px solid rgba(255,255,255,0.05)", background: "rgba(6,12,22,0.85)", backdropFilter: "blur(10px)" }}>
-        <div className="container mx-auto px-6 max-w-7xl">
-          <div className="flex flex-wrap">
-            {[["Instant setup","< 5 minutes"],["No-code config","Point & click"],["Content insights","Real-time analytics"],["Lead capture","Built-in forms"],["External sources","PDFs, video, audio"],["Enterprise security","CAPTCHA protected"]].map(([label,sub],i) => (
-              <div key={label} className="flex-1 min-w-[120px] px-5 py-4" style={{ borderLeft: i>0?"1px solid rgba(255,255,255,0.05)":"none" }}>
-                <div className="text-xs font-semibold text-white mb-0.5" style={{ fontFamily: "'Space Grotesk',sans-serif" }}>{label}</div>
-                <div className="text-xs" style={{ color: "rgba(255,255,255,0.3)" }}>{sub}</div>
+        {/* Content area */}
+        <div className="p-6">
+          <div className="grid grid-cols-3 gap-4 mb-5">
+            {[
+              { label: "Total Queries", val: "12,847", trend: "+18%" },
+              { label: "Answer Rate", val: "94.2%", trend: "+3.1%" },
+              { label: "Avg Response", val: "1.2s", trend: "-0.3s" },
+            ].map(stat => (
+              <div key={stat.label} className="p-4 rounded-xl" style={{ background: "rgba(0,201,167,0.05)", border: "1px solid rgba(0,201,167,0.1)" }}>
+                <p className="text-xs mb-1" style={{ color: "rgba(255,255,255,0.45)" }}>{stat.label}</p>
+                <p className="text-xl font-bold" style={{ color: "#fff" }}>{stat.val}</p>
+                <p className="text-xs mt-1" style={{ color: "#00C9A7" }}>{stat.trend} this week</p>
+              </div>
+            ))}
+          </div>
+
+          {/* Query list */}
+          <div className="space-y-2">
+            <p className="text-xs font-medium mb-3" style={{ color: "rgba(255,255,255,0.4)" }}>Recent visitor questions</p>
+            {[
+              { q: "What's your return policy?", answered: true, time: "2s ago" },
+              { q: "Do you offer bulk discounts?", answered: true, time: "14s ago" },
+              { q: "How do I cancel my subscription?", answered: true, time: "1m ago" },
+              { q: "Is there a free trial available?", answered: false, time: "3m ago" },
+            ].map((item, i) => (
+              <div key={i} className="flex items-center gap-3 px-3 py-2.5 rounded-lg" style={{ background: "rgba(255,255,255,0.03)" }}>
+                <div className={`w-2 h-2 rounded-full flex-shrink-0 ${item.answered ? "bg-teal-400" : "bg-yellow-400"}`} />
+                <span className="flex-1 text-sm truncate" style={{ color: "rgba(255,255,255,0.75)" }}>{item.q}</span>
+                <span className="text-xs flex-shrink-0" style={{ color: "rgba(255,255,255,0.3)" }}>{item.time}</span>
+                <span className="text-xs px-2 py-0.5 rounded-full flex-shrink-0" style={{ background: item.answered ? "rgba(0,201,167,0.12)" : "rgba(251,191,36,0.12)", color: item.answered ? "#00C9A7" : "#FBBF24" }}>
+                  {item.answered ? "Answered" : "Gap found"}
+                </span>
               </div>
             ))}
           </div>
         </div>
       </div>
-    </section>
+    </div>
   );
 }
 
-/* ─── Capabilities overview ─────────────────────────────────── */
-function CapabilitiesStrip() {
-  const ref = useRef<HTMLDivElement>(null);
-  const [visible, setVisible] = useState(false);
+// ─── Page ─────────────────────────────────────────────────────────────────────
+
+export default function Product() {
+  const [activeCapability, setActiveCapability] = useState(0);
+  const sectionRef = useRef<HTMLDivElement>(null);
+
   useEffect(() => {
-    const observer = new IntersectionObserver(([e]) => { if (e.isIntersecting) { setVisible(true); observer.disconnect(); } }, { threshold: 0.2 });
-    if (ref.current) observer.observe(ref.current);
-    return () => observer.disconnect();
-  }, []);
-
-  const caps = [
-    { icon: Zap, label: "Instant AI answers" },
-    { icon: Zap, label: "1-click setup" },
-    { icon: BarChart3, label: "Content insights" },
-    { icon: Sliders, label: "No-code customization" },
-    { icon: Users, label: "Lead capture" },
-    { icon: Globe, label: "External content" },
-  ];
-
-  return (
-    <section ref={ref} className="py-20 relative" style={{ background: "#0A1420", borderTop: "1px solid rgba(255,255,255,0.04)", borderBottom: "1px solid rgba(255,255,255,0.04)" }}>
-      <div className="container mx-auto px-6 max-w-7xl">
-        <div className="text-center mb-12" style={{ opacity: visible?1:0, transform: visible?"translateY(0)":"translateY(20px)", transition: "opacity 0.6s ease, transform 0.6s ease" }}>
-          <p className="text-sm font-medium" style={{ color: "rgba(255,255,255,0.3)", fontFamily: "'Space Grotesk',sans-serif" }}>Six capabilities. One plugin. Zero complexity.</p>
-        </div>
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
-          {caps.map((cap,i) => (
-            <div key={cap.label} className="flex flex-col items-center gap-3 p-5 rounded-2xl text-center" style={{ background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.06)", opacity: visible?1:0, transform: visible?"translateY(0)":"translateY(24px)", transition: `opacity 0.6s ease ${i*0.07}s, transform 0.6s ease ${i*0.07}s` }}>
-              <div className="w-10 h-10 rounded-xl flex items-center justify-center" style={{ background: "rgba(0,201,167,0.1)", border: "1px solid rgba(0,201,167,0.15)" }}>
-                <cap.icon size={18} style={{ color: "#00C9A7" }} />
-              </div>
-              <span className="text-xs font-semibold text-white leading-tight" style={{ fontFamily: "'Space Grotesk',sans-serif" }}>{cap.label}</span>
-            </div>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-}
-
-/* ─── Security callout ──────────────────────────────────────── */
-function SecurityCallout() {
-  const ref = useRef<HTMLDivElement>(null);
-  const [visible, setVisible] = useState(false);
-  useEffect(() => {
-    const observer = new IntersectionObserver(([e]) => { if (e.isIntersecting) { setVisible(true); observer.disconnect(); } }, { threshold: 0.2 });
-    if (ref.current) observer.observe(ref.current);
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("visible");
+          }
+        });
+      },
+      { threshold: 0.1 }
+    );
+    const elements = document.querySelectorAll(".reveal");
+    elements.forEach((el) => observer.observe(el));
     return () => observer.disconnect();
   }, []);
 
   return (
-    <section ref={ref} className="py-24 relative overflow-hidden" style={{ background: "#080E1A", borderTop: "1px solid rgba(255,255,255,0.04)" }}>
-      <div className="container mx-auto px-6 max-w-7xl">
-        <div className="rounded-3xl p-12 lg:p-16 relative overflow-hidden" style={{ background: "rgba(0,201,167,0.04)", border: "1px solid rgba(0,201,167,0.12)", opacity: visible?1:0, transform: visible?"translateY(0)":"translateY(32px)", transition: "opacity 0.7s ease, transform 0.7s ease" }}>
-          <div className="absolute top-0 right-0 w-96 h-96 pointer-events-none" style={{ background: "radial-gradient(circle,rgba(0,201,167,0.08) 0%,transparent 70%)", transform: "translate(30%,-30%)" }} />
-          <div className="relative z-10 grid lg:grid-cols-2 gap-12 items-center">
-            <div>
-              <div className="flex items-center gap-3 mb-6">
-                <div className="w-10 h-10 rounded-xl flex items-center justify-center" style={{ background: "rgba(0,201,167,0.12)", border: "1px solid rgba(0,201,167,0.2)" }}>
-                  <Shield size={18} style={{ color: "#00C9A7" }} />
+    <div className="min-h-screen" style={{ background: "#060C16", color: "#fff" }}>
+      <Navbar />
+
+      {/* ── 1. Hero ── */}
+      <section className="relative overflow-hidden" style={{ paddingTop: "80px" }}>
+        {/* Dot grid */}
+        <div className="absolute inset-0 pointer-events-none" style={{ backgroundImage: "radial-gradient(rgba(0,201,167,0.1) 1px, transparent 1px)", backgroundSize: "40px 40px", opacity: 0.4 }} />
+        {/* Glow */}
+        <div className="absolute inset-0 pointer-events-none" style={{ background: "radial-gradient(ellipse 60% 50% at 50% 30%, rgba(0,201,167,0.06) 0%, transparent 70%)" }} />
+
+        <div className="container relative z-10 mx-auto px-6 max-w-5xl text-center pt-20 pb-16">
+          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium mb-8" style={{ background: "rgba(0,201,167,0.1)", border: "1px solid rgba(0,201,167,0.25)", color: "#00C9A7" }}>
+            <Zap size={13} />
+            WordPress Plugin · Also available for Webflow, Wix & Squarespace
+          </div>
+
+          <h1 className="font-extrabold leading-[1.05] tracking-tight mb-6" style={{ fontSize: "clamp(2.5rem, 5vw, 4rem)", fontFamily: "'Space Grotesk', sans-serif" }}>
+            Everything you need to<br />
+            <span style={{ color: "#00C9A7" }}>answer visitors instantly.</span>
+          </h1>
+
+          <p className="text-lg mx-auto mb-10 max-w-2xl" style={{ color: "rgba(255,255,255,0.6)", lineHeight: 1.7 }}>
+            Six powerful capabilities that turn your website into an intelligent answer engine — with no code, no AI expertise, and no ongoing maintenance.
+          </p>
+
+          <div className="flex items-center justify-center gap-4 flex-wrap">
+            <a
+              href="https://wordpress.org/plugins/ansera"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 px-6 py-3 rounded-xl font-semibold text-sm transition-all hover:opacity-90"
+              style={{ background: "#00C9A7", color: "#060C16" }}
+            >
+              Install Free on WordPress <ArrowRight size={15} />
+            </a>
+            <button className="inline-flex items-center gap-2 px-6 py-3 rounded-xl font-semibold text-sm border transition-all hover:bg-white/5" style={{ borderColor: "rgba(255,255,255,0.2)", color: "rgba(255,255,255,0.8)" }}>
+              <Play size={13} /> Watch demo
+            </button>
+          </div>
+
+          {/* Capability pills */}
+          <div className="flex flex-wrap justify-center gap-2 mt-10">
+            {["Instant setup", "No-code config", "Content insights", "No-code customization", "Lead capture", "External sources"].map(cap => (
+              <span key={cap} className="px-3 py-1.5 rounded-full text-xs font-medium" style={{ background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.1)", color: "rgba(255,255,255,0.6)" }}>
+                {cap}
+              </span>
+            ))}
+          </div>
+        </div>
+
+        {/* Large hero mockup */}
+        <div className="container mx-auto px-6 max-w-5xl pb-0">
+          <div className="relative">
+            <div className="absolute inset-x-0 bottom-0 h-24 pointer-events-none z-10" style={{ background: "linear-gradient(to bottom, transparent, #060C16)" }} />
+            <HeroMockup />
+          </div>
+        </div>
+      </section>
+
+      {/* ── 2. Trust bar ── */}
+      <section className="py-14 border-y" style={{ borderColor: "rgba(255,255,255,0.06)", background: "rgba(255,255,255,0.015)" }}>
+        <div className="container mx-auto px-6 max-w-5xl">
+          <p className="text-center text-sm mb-8 font-medium" style={{ color: "rgba(255,255,255,0.35)", letterSpacing: "0.05em" }}>
+            USED BY 2,000+ WEBSITES WORLDWIDE
+          </p>
+          <div className="flex flex-wrap justify-center items-center gap-8 md:gap-12">
+            {integrations.map(p => (
+              <div key={p.name} className="flex items-center gap-2 opacity-50 hover:opacity-80 transition-opacity">
+                <div className="w-7 h-7 rounded-md flex items-center justify-center text-xs font-bold" style={{ background: p.color + "22", color: p.color, border: `1px solid ${p.color}33` }}>
+                  {p.icon}
                 </div>
-                <span className="text-xs font-semibold tracking-widest uppercase" style={{ color: "#00C9A7", letterSpacing: "0.15em" }}>Enterprise Security</span>
+                <span className="text-sm font-medium" style={{ color: "rgba(255,255,255,0.7)" }}>{p.name}</span>
               </div>
-              <h2 className="text-3xl lg:text-4xl font-bold text-white mb-5 leading-tight" style={{ fontFamily: "'Space Grotesk',sans-serif", letterSpacing: "-0.04em" }}>Built for security from the ground up.</h2>
-              <p className="text-base leading-relaxed" style={{ color: "rgba(255,255,255,0.5)", fontFamily: "'DM Sans',sans-serif" }}>Ansera uses invisible CAPTCHA technology to protect your site from spam and abuse, with enterprise-grade infrastructure that keeps your data safe and your visitors' privacy intact.</p>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── 3. Value props ── */}
+      <section className="py-24 reveal">
+        <div className="container mx-auto px-6 max-w-5xl">
+          <div className="text-center mb-16">
+            <h2 className="font-extrabold mb-4" style={{ fontSize: "clamp(1.75rem, 3.5vw, 2.75rem)", fontFamily: "'Space Grotesk', sans-serif" }}>
+              Built to answer visitors instantly
+            </h2>
+            <p className="text-base max-w-xl mx-auto" style={{ color: "rgba(255,255,255,0.5)" }}>
+              One plugin. Six capabilities. Zero ongoing maintenance.
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-3 gap-6">
+            {valueProps.map((vp) => (
+              <div key={vp.title} className="p-7 rounded-2xl border transition-all hover:border-teal-500/30 group" style={{ background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.07)" }}>
+                <div className="w-10 h-10 rounded-xl flex items-center justify-center mb-5" style={{ background: "rgba(0,201,167,0.1)" }}>
+                  <vp.icon size={18} style={{ color: "#00C9A7" }} />
+                </div>
+                <h3 className="font-bold text-lg mb-3" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>{vp.title}</h3>
+                <p className="text-sm leading-relaxed mb-4" style={{ color: "rgba(255,255,255,0.55)" }}>{vp.desc}</p>
+                <span className="inline-flex items-center gap-1 text-sm font-medium" style={{ color: "#00C9A7" }}>
+                  {vp.link} <ChevronRight size={14} />
+                </span>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── 4. Capabilities tabs (Front.com Deflect/Route/Resolve/Measure style) ── */}
+      <section className="py-24 border-t" style={{ borderColor: "rgba(255,255,255,0.06)" }} ref={sectionRef}>
+        <div className="container mx-auto px-6 max-w-6xl">
+          <div className="text-center mb-16 reveal">
+            <p className="text-xs font-semibold tracking-widest uppercase mb-4" style={{ color: "#00C9A7", letterSpacing: "0.2em" }}>Six Capabilities</p>
+            <h2 className="font-extrabold mb-4" style={{ fontSize: "clamp(1.75rem, 3.5vw, 2.75rem)", fontFamily: "'Space Grotesk', sans-serif" }}>
+              How Ansera works for you
+            </h2>
+            <p className="text-base max-w-xl mx-auto" style={{ color: "rgba(255,255,255,0.5)" }}>
+              Every capability is designed to work together — from first install to ongoing improvement.
+            </p>
+          </div>
+
+          <div className="grid lg:grid-cols-[280px_1fr] gap-8 items-start">
+            {/* Left: vertical tabs */}
+            <div className="space-y-1">
+              {workflowTabs.map((tab, i) => (
+                <button
+                  key={tab.id}
+                  onClick={() => setActiveCapability(i)}
+                  className="w-full text-left px-5 py-4 rounded-xl transition-all flex items-center gap-3 group"
+                  style={activeCapability === i
+                    ? { background: "rgba(0,201,167,0.1)", border: "1px solid rgba(0,201,167,0.25)" }
+                    : { background: "transparent", border: "1px solid transparent" }
+                  }
+                >
+                  <div className="w-2 h-2 rounded-full flex-shrink-0 transition-all" style={{ background: activeCapability === i ? "#00C9A7" : "rgba(255,255,255,0.2)" }} />
+                  <span className="font-semibold text-sm transition-colors" style={{ color: activeCapability === i ? "#fff" : "rgba(255,255,255,0.5)", fontFamily: "'Space Grotesk', sans-serif" }}>
+                    {tab.label}
+                  </span>
+                  {activeCapability === i && <ChevronRight size={14} className="ml-auto" style={{ color: "#00C9A7" }} />}
+                </button>
+              ))}
             </div>
-            <div className="grid grid-cols-2 gap-4">
-              {[["Invisible CAPTCHA","Spam protection without friction"],["Data privacy","No visitor data stored or sold"],["HTTPS encrypted","All traffic secured end-to-end"],["GDPR ready","Compliant with EU data regulations"]].map(([label,desc]) => (
-                <div key={label} className="p-4 rounded-xl" style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.06)" }}>
-                  <div className="flex items-center gap-2 mb-2">
-                    <div className="w-1.5 h-1.5 rounded-full" style={{ background: "#00C9A7" }} />
-                    <span className="text-sm font-semibold text-white" style={{ fontFamily: "'Space Grotesk',sans-serif" }}>{label}</span>
+
+            {/* Right: content + mockup */}
+            <div className="reveal">
+              <AnimatePresence mode="wait">
+                <motion.div
+                  key={activeCapability}
+                  initial={{ opacity: 0, y: 12 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -12 }}
+                  transition={{ duration: 0.25 }}
+                >
+                  <div className="mb-8">
+                    <p className="text-xs font-semibold tracking-widest uppercase mb-3" style={{ color: "#00C9A7", letterSpacing: "0.2em" }}>
+                      {workflowTabs[activeCapability].label}
+                    </p>
+                    <h3 className="font-extrabold mb-4 leading-tight" style={{ fontSize: "clamp(1.4rem, 2.5vw, 2rem)", fontFamily: "'Space Grotesk', sans-serif" }}>
+                      {workflowTabs[activeCapability].headline}
+                    </h3>
+                    <p className="text-sm leading-relaxed mb-6" style={{ color: "rgba(255,255,255,0.55)", maxWidth: "520px" }}>
+                      {workflowTabs[activeCapability].body}
+                    </p>
+                    <ul className="space-y-2.5">
+                      {workflowTabs[activeCapability].bullets.map(b => (
+                        <li key={b} className="flex items-start gap-3 text-sm" style={{ color: "rgba(255,255,255,0.7)" }}>
+                          <CheckCircle2 size={15} className="flex-shrink-0 mt-0.5" style={{ color: "#00C9A7" }} />
+                          {b}
+                        </li>
+                      ))}
+                    </ul>
                   </div>
-                  <p className="text-xs" style={{ color: "rgba(255,255,255,0.35)" }}>{desc}</p>
+                  {mockupMap[workflowTabs[activeCapability].mockup]}
+                </motion.div>
+              </AnimatePresence>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ── 5. Integrations ── */}
+      <section className="py-24 border-t reveal" style={{ borderColor: "rgba(255,255,255,0.06)" }}>
+        <div className="container mx-auto px-6 max-w-5xl">
+          <div className="text-center mb-16">
+            <h2 className="font-extrabold mb-4" style={{ fontSize: "clamp(1.75rem, 3.5vw, 2.75rem)", fontFamily: "'Space Grotesk', sans-serif" }}>
+              Works where you already are
+            </h2>
+            <p className="text-base max-w-xl mx-auto" style={{ color: "rgba(255,255,255,0.5)" }}>
+              Install directly from your platform's marketplace or add a single code snippet. No developer needed.
+            </p>
+          </div>
+
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-12">
+            {[
+              { icon: "W", name: "WordPress", desc: "Install from the Plugin Marketplace in one click", color: "#21759B" },
+              { icon: "Wf", name: "Webflow", desc: "Available in the Webflow App Marketplace", color: "#4353FF" },
+              { icon: "Wx", name: "Wix", desc: "Add via Wix App Market or custom code", color: "#FAAD00" },
+              { icon: "Sq", name: "Squarespace", desc: "Paste a single code snippet in your settings", color: "#fff" },
+            ].map(p => (
+              <div key={p.name} className="p-5 rounded-2xl border transition-all hover:border-teal-500/30" style={{ background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.07)" }}>
+                <div className="w-10 h-10 rounded-xl flex items-center justify-center text-sm font-bold mb-4" style={{ background: p.color + "18", color: p.color, border: `1px solid ${p.color}30` }}>
+                  {p.icon}
                 </div>
+                <h4 className="font-bold mb-2" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>{p.name}</h4>
+                <p className="text-xs leading-relaxed" style={{ color: "rgba(255,255,255,0.45)" }}>{p.desc}</p>
+              </div>
+            ))}
+          </div>
+
+          <div className="text-center">
+            <p className="text-sm mb-2" style={{ color: "rgba(255,255,255,0.4)" }}>Also works with external content from:</p>
+            <div className="flex flex-wrap justify-center gap-3 mt-3">
+              {["PDFs", "YouTube", "Vimeo", "Google Drive", "Dropbox", "Podcasts", "Word Docs"].map(s => (
+                <span key={s} className="px-3 py-1.5 rounded-full text-xs" style={{ background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.1)", color: "rgba(255,255,255,0.6)" }}>{s}</span>
               ))}
             </div>
           </div>
         </div>
-      </div>
-    </section>
-  );
-}
+      </section>
 
-/* ─── Product CTA ───────────────────────────────────────────── */
-function ProductCTA() {
-  const ref = useRef<HTMLDivElement>(null);
-  const [visible, setVisible] = useState(false);
-  useEffect(() => {
-    const observer = new IntersectionObserver(([e]) => { if (e.isIntersecting) { setVisible(true); observer.disconnect(); } }, { threshold: 0.2 });
-    if (ref.current) observer.observe(ref.current);
-    return () => observer.disconnect();
-  }, []);
-
-  return (
-    <section ref={ref} className="relative overflow-hidden py-36" style={{ background: "#060C16" }}>
-      {/* Dark teal radial glow */}
-      <div className="absolute inset-0 pointer-events-none" style={{ background: "radial-gradient(ellipse 70% 60% at 50% 50%,rgba(0,201,167,0.08) 0%,transparent 70%)" }} />
-      {/* Subtle grid */}
-      <div className="absolute inset-0 opacity-[0.02] pointer-events-none" style={{ backgroundImage: "linear-gradient(rgba(255,255,255,0.5) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.5) 1px,transparent 1px)", backgroundSize: "60px 60px" }} />
-
-      <div className="container relative z-10 mx-auto px-6 max-w-4xl text-center" style={{ opacity: visible?1:0, transform: visible?"translateY(0)":"translateY(32px)", transition: "opacity 0.8s ease, transform 0.8s ease" }}>
-        <p className="text-xs font-semibold tracking-widest uppercase mb-6" style={{ color: "#00C9A7", letterSpacing: "0.2em", fontFamily: "'Space Grotesk',sans-serif" }}>Get started today</p>
-        <h2 className="text-4xl lg:text-5xl xl:text-6xl font-bold text-white mb-6 leading-[1.05]" style={{ fontFamily: "'Space Grotesk',sans-serif", letterSpacing: "-0.04em" }}>
-          Your website should answer questions.
-          <br />
-          <span style={{ background: "linear-gradient(135deg,#00C9A7 0%,#7FFFD4 100%)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text" }}>Not lose customers.</span>
-        </h2>
-        <p className="text-lg leading-relaxed mb-12 mx-auto" style={{ color: "rgba(255,255,255,0.5)", fontFamily: "'DM Sans',sans-serif", maxWidth: "480px" }}>Install Ansera in under five minutes and start converting visitors into customers today.</p>
-        <div className="flex flex-wrap gap-4 justify-center">
-          <a href="https://wordpress.org/plugins/ansera" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 px-8 py-4 rounded-xl text-sm font-semibold" style={{ background: "linear-gradient(135deg,#00C9A7,#00A88C)", color: "#060C16", fontFamily: "'Space Grotesk',sans-serif", boxShadow: "0 0 40px rgba(0,201,167,0.35)" }}>
-            Install Free on WordPress <ArrowRight size={16} />
-          </a>
-          <button className="inline-flex items-center gap-2 px-8 py-4 rounded-xl text-sm font-semibold" style={{ background: "rgba(255,255,255,0.07)", color: "rgba(255,255,255,0.8)", border: "1px solid rgba(255,255,255,0.12)", fontFamily: "'Space Grotesk',sans-serif" }}>
-            View pricing
-          </button>
+      {/* ── 6. Final CTA ── */}
+      <section className="py-28 border-t reveal" style={{ borderColor: "rgba(255,255,255,0.06)" }}>
+        <div className="container mx-auto px-6 max-w-3xl text-center">
+          <h2 className="font-extrabold mb-5 leading-tight" style={{ fontSize: "clamp(2rem, 4vw, 3.25rem)", fontFamily: "'Space Grotesk', sans-serif" }}>
+            Ready to answer every<br />visitor question, instantly?
+          </h2>
+          <p className="text-base mb-10" style={{ color: "rgba(255,255,255,0.5)" }}>
+            Start free. No credit card required. Live in under 5 minutes.
+          </p>
+          <div className="flex items-center justify-center gap-4 flex-wrap">
+            <a
+              href="https://wordpress.org/plugins/ansera"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 px-7 py-3.5 rounded-xl font-semibold transition-all hover:opacity-90"
+              style={{ background: "#00C9A7", color: "#060C16" }}
+            >
+              Install Free on WordPress <ArrowRight size={15} />
+            </a>
+            <Link href="/#pricing" className="inline-flex items-center gap-2 px-7 py-3.5 rounded-xl font-semibold border transition-all hover:bg-white/5" style={{ borderColor: "rgba(255,255,255,0.2)", color: "rgba(255,255,255,0.8)" }}>
+              View pricing
+            </Link>
+          </div>
+          <p className="text-xs mt-6" style={{ color: "rgba(255,255,255,0.3)" }}>
+            Free plan available · No credit card required · Cancel anytime
+          </p>
         </div>
-        <p className="mt-6 text-xs" style={{ color: "rgba(255,255,255,0.25)" }}>Free plan available · No credit card required · Cancel anytime</p>
-      </div>
-    </section>
-  );
-}
+      </section>
 
-/* ─── Page ──────────────────────────────────────────────────── */
-export default function Product() {
-  useEffect(() => { window.scrollTo(0, 0); }, []);
-
-  return (
-    <div className="min-h-screen" style={{ background: "#060C16" }}>
-      <Navbar />
-      <ProductHero />
-      <CapabilitiesStrip />
-      {featureData.map((feature, index) => (
-        <FeatureSection key={feature.id} feature={feature} index={index} />
-      ))}
-      <SecurityCallout />
-      <ProductCTA />
       <Footer />
     </div>
   );
