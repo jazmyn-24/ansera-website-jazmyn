@@ -116,16 +116,14 @@ export default function HeroSection() {
               className="text-5xl lg:text-6xl xl:text-7xl font-bold text-white leading-[1.05] mb-6"
               style={{ fontFamily: "'Space Grotesk', sans-serif", letterSpacing: "-0.04em" }}
             >
-              Stop losing visitors to{" "}
-              <span className="text-gradient-teal">broken search.</span>
+Smarter than search.{" "}<span className="text-gradient-teal">Simpler than chatbots.</span>
             </h1>
 
             <p
               className="text-lg text-white/70 mb-10 leading-relaxed max-w-lg"
               style={{ fontFamily: "'DM Sans', sans-serif" }}
             >
-              Your website's search is costing you conversions. Ansera replaces it with AI
-              that actually understands what visitors want — and delivers answers instantly.
+              Ansera gives your website an AI brain. Visitors ask questions in plain language and get instant, accurate answers — without the complexity of a chatbot.
             </p>
 
             {/* CTAs */}

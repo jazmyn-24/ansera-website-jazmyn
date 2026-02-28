@@ -69,45 +69,40 @@ export default function PricingSection() {
   return (
     <section
       id="pricing"
-      className="py-24"
-      style={{ background: "#fff" }}
+      className="py-28"
+      style={{ background: "#0D1B2A" }}
     >
       <div className="container mx-auto px-6 max-w-7xl">
         {/* Header */}
         <div className="text-center mb-12 reveal">
-          <div
-            className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium mb-6"
-            style={{
-              background: "rgba(0, 201, 167, 0.08)",
-              border: "1px solid rgba(0, 201, 167, 0.25)",
-              color: "#00A88C",
-            }}
+          <p
+            className="text-xs font-semibold tracking-widest uppercase mb-4"
+            style={{ color: "#00C9A7", letterSpacing: "0.15em" }}
           >
             Pricing
-          </div>
+          </p>
           <h2
-            className="text-4xl lg:text-5xl font-bold mb-4"
-            style={{ color: "#0D1B2A", fontFamily: "'Space Grotesk', sans-serif", letterSpacing: "-0.03em" }}
+            className="text-4xl lg:text-5xl font-bold mb-4 text-white"
+            style={{ fontFamily: "'Space Grotesk', sans-serif", letterSpacing: "-0.04em" }}
           >
-            Simple, transparent{" "}
-            <span style={{ color: "#00C9A7" }}>pricing.</span>
+            Simple, transparent pricing.
           </h2>
           <p
             className="text-lg max-w-xl mx-auto mb-8"
-            style={{ color: "rgba(13,27,42,0.6)", lineHeight: 1.7 }}
+            style={{ color: "rgba(255,255,255,0.5)", lineHeight: 1.7 }}
           >
             Start free. No credit card required. Upgrade when you're ready.
           </p>
 
           {/* Billing toggle */}
-          <div className="inline-flex items-center gap-3 p-1 rounded-xl" style={{ background: "#f3f4f6" }}>
+          <div className="inline-flex items-center gap-3 p-1 rounded-xl" style={{ background: "rgba(255,255,255,0.06)", border: "1px solid rgba(255,255,255,0.08)" }}>
             <button
               onClick={() => setAnnual(false)}
               className="px-5 py-2 rounded-lg text-sm font-medium transition-all duration-200"
               style={{
-                background: !annual ? "#fff" : "transparent",
-                color: !annual ? "#0D1B2A" : "rgba(13,27,42,0.5)",
-                boxShadow: !annual ? "0 1px 4px rgba(0,0,0,0.1)" : "none",
+                background: !annual ? "rgba(255,255,255,0.12)" : "transparent",
+                color: !annual ? "#fff" : "rgba(255,255,255,0.4)",
+                boxShadow: "none",
                 fontFamily: "'Space Grotesk', sans-serif",
               }}
             >
@@ -117,9 +112,9 @@ export default function PricingSection() {
               onClick={() => setAnnual(true)}
               className="px-5 py-2 rounded-lg text-sm font-medium transition-all duration-200 flex items-center gap-2"
               style={{
-                background: annual ? "#fff" : "transparent",
-                color: annual ? "#0D1B2A" : "rgba(13,27,42,0.5)",
-                boxShadow: annual ? "0 1px 4px rgba(0,0,0,0.1)" : "none",
+                background: annual ? "rgba(255,255,255,0.12)" : "transparent",
+                color: annual ? "#fff" : "rgba(255,255,255,0.4)",
+                boxShadow: "none",
                 fontFamily: "'Space Grotesk', sans-serif",
               }}
             >
@@ -141,13 +136,13 @@ export default function PricingSection() {
               key={plan.name}
               className={`reveal delay-${(i + 1) * 100} rounded-2xl p-8 relative transition-all duration-300`}
               style={{
-                background: plan.popular ? "#0D1B2A" : "#fff",
+                background: plan.popular ? "rgba(0,201,167,0.07)" : "rgba(255,255,255,0.03)",
                 border: plan.popular
-                  ? "2px solid #00C9A7"
-                  : "1px solid rgba(0,0,0,0.08)",
+                  ? "1px solid rgba(0,201,167,0.35)"
+                  : "1px solid rgba(255,255,255,0.07)",
                 boxShadow: plan.popular
-                  ? "0 20px 60px rgba(0,201,167,0.15)"
-                  : "0 4px 24px rgba(0,0,0,0.04)",
+                  ? "0 20px 60px rgba(0,201,167,0.12)"
+                  : "none",
                 transform: plan.popular ? "scale(1.02)" : "scale(1)",
               }}
             >
@@ -182,7 +177,7 @@ export default function PricingSection() {
                 <span
                   className="text-5xl font-bold"
                   style={{
-                    color: plan.popular ? "#fff" : "#0D1B2A",
+                    color: "#fff",
                     fontFamily: "'Space Grotesk', sans-serif",
                     letterSpacing: "-0.04em",
                   }}
@@ -191,7 +186,7 @@ export default function PricingSection() {
                 </span>
                 <span
                   className="text-sm mb-2"
-                  style={{ color: plan.popular ? "rgba(255,255,255,0.5)" : "rgba(13,27,42,0.4)" }}
+                  style={{ color: "rgba(255,255,255,0.45)" }}
                 >
                   /mo
                 </span>
@@ -199,7 +194,7 @@ export default function PricingSection() {
 
               <p
                 className="text-sm mb-8 leading-relaxed"
-                style={{ color: plan.popular ? "rgba(255,255,255,0.55)" : "rgba(13,27,42,0.55)" }}
+                style={{ color: "rgba(255,255,255,0.5)" }}
               >
                 {plan.description}
               </p>
@@ -211,15 +206,15 @@ export default function PricingSection() {
                   background: plan.popular
                     ? "linear-gradient(135deg, #00C9A7, #00A88C)"
                     : "transparent",
-                  color: plan.popular ? "#0D1B2A" : "#0D1B2A",
-                  border: plan.popular ? "none" : "1.5px solid #0D1B2A",
+                  color: plan.popular ? "#0D1B2A" : "rgba(255,255,255,0.8)",
+                  border: plan.popular ? "none" : "1px solid rgba(255,255,255,0.2)",
                   fontFamily: "'Space Grotesk', sans-serif",
                 }}
                 onMouseEnter={(e) => {
                   if (plan.popular) {
                     e.currentTarget.style.boxShadow = "0 0 20px rgba(0,201,167,0.4)";
                   } else {
-                    e.currentTarget.style.background = "#0D1B2A";
+                    e.currentTarget.style.background = "rgba(255,255,255,0.1)";
                     e.currentTarget.style.color = "#fff";
                   }
                 }}
@@ -228,7 +223,7 @@ export default function PricingSection() {
                     e.currentTarget.style.boxShadow = "none";
                   } else {
                     e.currentTarget.style.background = "transparent";
-                    e.currentTarget.style.color = "#0D1B2A";
+                    e.currentTarget.style.color = "rgba(255,255,255,0.8)";
                   }
                 }}
               >
@@ -247,7 +242,7 @@ export default function PricingSection() {
                     </div>
                     <span
                       className="text-sm"
-                      style={{ color: plan.popular ? "rgba(255,255,255,0.75)" : "rgba(13,27,42,0.7)" }}
+                      style={{ color: "rgba(255,255,255,0.65)" }}
                     >
                       {feature}
                     </span>
@@ -259,7 +254,7 @@ export default function PricingSection() {
         </div>
 
         {/* Footer note */}
-        <p className="text-center text-sm mt-10" style={{ color: "rgba(13,27,42,0.4)" }}>
+        <p className="text-center text-sm mt-10" style={{ color: "rgba(255,255,255,0.3)" }}>
           All plans include a 14-day free trial. No credit card required.
         </p>
       </div>

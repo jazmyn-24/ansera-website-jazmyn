@@ -1,62 +1,93 @@
 /*
- * LogoBar — Platform integrations bar
- * Light section showing compatible platforms
+ * LogoBar — "Trusted by teams everywhere"
+ * Linear.app-inspired: scrolling marquee, dark background, monochrome logos
  */
 
-export default function LogoBar() {
-  const platforms = [
-    { name: "WordPress", icon: "W" },
-    { name: "Webflow", icon: "Wf" },
-    { name: "Wix", icon: "Wx" },
-    { name: "Squarespace", icon: "Sq" },
-    { name: "Shopify", icon: "Sh" },
-    { name: "HubSpot", icon: "Hs" },
-    { name: "Ghost", icon: "Gh" },
-  ];
+const logos = [
+  { name: "WordPress", icon: "W" },
+  { name: "Webflow", icon: "Wf" },
+  { name: "Wix", icon: "Wx" },
+  { name: "Squarespace", icon: "Sq" },
+  { name: "Shopify", icon: "Sh" },
+  { name: "HubSpot", icon: "Hs" },
+  { name: "Ghost", icon: "Gh" },
+  { name: "Framer", icon: "Fr" },
+];
 
+// Duplicate for seamless loop
+const allLogos = [...logos, ...logos];
+
+export default function LogoBar() {
   return (
     <section
-      className="py-12 border-b"
-      style={{ background: "#fff", borderColor: "rgba(0,0,0,0.06)", boxShadow: "0 -1px 0 rgba(0,0,0,0.04)" }}
+      className="py-10 overflow-hidden"
+      style={{
+        background: "#0a1520",
+        borderTop: "1px solid rgba(255,255,255,0.06)",
+        borderBottom: "1px solid rgba(255,255,255,0.06)",
+      }}
     >
-      <div className="container mx-auto px-6 max-w-7xl">
-        <div className="flex flex-col items-center gap-6">
-          <p
-            className="text-sm font-medium uppercase tracking-widest"
-            style={{ color: "rgba(0,0,0,0.35)" }}
-          >
-            Works seamlessly with your favorite platforms
-          </p>
-          <div className="flex items-center gap-8 flex-wrap justify-center">
-            {platforms.map((p) => (
+      <div className="container mx-auto px-6 max-w-7xl mb-6">
+        <p
+          className="text-center text-xs font-medium tracking-widest uppercase"
+          style={{ color: "rgba(255,255,255,0.3)", letterSpacing: "0.15em" }}
+        >
+          Integrates with the platforms you already use
+        </p>
+      </div>
+
+      {/* Marquee track */}
+      <div className="relative">
+        {/* Fade edges */}
+        <div
+          className="absolute left-0 top-0 bottom-0 w-24 z-10 pointer-events-none"
+          style={{ background: "linear-gradient(to right, #0a1520, transparent)" }}
+        />
+        <div
+          className="absolute right-0 top-0 bottom-0 w-24 z-10 pointer-events-none"
+          style={{ background: "linear-gradient(to left, #0a1520, transparent)" }}
+        />
+
+        <div className="marquee-track flex gap-10 items-center">
+          {allLogos.map((logo, i) => (
+            <div
+              key={i}
+              className="flex items-center gap-2.5 flex-shrink-0 opacity-40 hover:opacity-70 transition-opacity duration-200"
+            >
               <div
-                key={p.name}
-                className="flex items-center gap-2 group transition-all duration-200"
-                style={{ opacity: 0.5 }}
-                onMouseEnter={(e) => (e.currentTarget.style.opacity = "1")}
-                onMouseLeave={(e) => (e.currentTarget.style.opacity = "0.5")}
+                className="w-7 h-7 rounded-md flex items-center justify-center text-xs font-bold"
+                style={{
+                  background: "rgba(255,255,255,0.1)",
+                  color: "rgba(255,255,255,0.8)",
+                  fontFamily: "'Space Grotesk', sans-serif",
+                }}
               >
-                <div
-                  className="w-8 h-8 rounded-lg flex items-center justify-center text-xs font-bold"
-                  style={{
-                    background: "#0D1B2A",
-                    color: "#00C9A7",
-                    fontFamily: "'Space Grotesk', sans-serif",
-                  }}
-                >
-                  {p.icon}
-                </div>
-                <span
-                  className="text-sm font-semibold"
-                  style={{ color: "#0D1B2A", fontFamily: "'Space Grotesk', sans-serif" }}
-                >
-                  {p.name}
-                </span>
+                {logo.icon}
               </div>
-            ))}
-          </div>
+              <span
+                className="text-sm font-medium whitespace-nowrap"
+                style={{ color: "rgba(255,255,255,0.7)", fontFamily: "'Space Grotesk', sans-serif" }}
+              >
+                {logo.name}
+              </span>
+            </div>
+          ))}
         </div>
       </div>
+
+      <style>{`
+        .marquee-track {
+          animation: marquee 30s linear infinite;
+          width: max-content;
+        }
+        .marquee-track:hover {
+          animation-play-state: paused;
+        }
+        @keyframes marquee {
+          from { transform: translateX(0); }
+          to { transform: translateX(-50%); }
+        }
+      `}</style>
     </section>
   );
 }

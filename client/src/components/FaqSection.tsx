@@ -53,28 +53,23 @@ export default function FaqSection() {
   const [openIndex, setOpenIndex] = useState<number | null>(0);
 
   return (
-    <section className="py-24" style={{ background: "#f8f9fa" }}>
+    <section className="py-28" style={{ background: "#0D1B2A" }}>
       <div className="container mx-auto px-6 max-w-4xl">
         {/* Header */}
         <div className="text-center mb-16 reveal">
-          <div
-            className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium mb-6"
-            style={{
-              background: "rgba(0, 201, 167, 0.08)",
-              border: "1px solid rgba(0, 201, 167, 0.25)",
-              color: "#00A88C",
-            }}
+          <p
+            className="text-xs font-semibold tracking-widest uppercase mb-4"
+            style={{ color: "#00C9A7", letterSpacing: "0.15em" }}
           >
             FAQ
-          </div>
+          </p>
           <h2
-            className="text-4xl lg:text-5xl font-bold mb-4"
-            style={{ color: "#0D1B2A", fontFamily: "'Space Grotesk', sans-serif", letterSpacing: "-0.03em" }}
+            className="text-4xl lg:text-5xl font-bold mb-4 text-white"
+            style={{ fontFamily: "'Space Grotesk', sans-serif", letterSpacing: "-0.04em" }}
           >
-            Frequently asked{" "}
-            <span style={{ color: "#00C9A7" }}>questions.</span>
+            Frequently asked questions.
           </h2>
-          <p style={{ color: "rgba(13,27,42,0.6)" }}>
+          <p style={{ color: "rgba(255,255,255,0.5)" }}>
             Everything you need to know about Ansera. Can't find the answer?{" "}
             <a href="#" style={{ color: "#00C9A7", textDecoration: "underline" }}>
               Talk to our team.
@@ -89,13 +84,11 @@ export default function FaqSection() {
               key={i}
               className="rounded-2xl overflow-hidden transition-all duration-200"
               style={{
-                background: "#fff",
+                background: openIndex === i ? "rgba(0,201,167,0.05)" : "rgba(255,255,255,0.03)",
                 border: openIndex === i
-                  ? "1px solid rgba(0,201,167,0.3)"
-                  : "1px solid rgba(0,0,0,0.06)",
-                boxShadow: openIndex === i
-                  ? "0 4px 20px rgba(0,201,167,0.08)"
-                  : "0 2px 8px rgba(0,0,0,0.03)",
+                  ? "1px solid rgba(0,201,167,0.25)"
+                  : "1px solid rgba(255,255,255,0.07)",
+                boxShadow: "none",
               }}
             >
               <button
@@ -105,7 +98,7 @@ export default function FaqSection() {
                 <span
                   className="font-semibold pr-4"
                   style={{
-                    color: openIndex === i ? "#00A88C" : "#0D1B2A",
+                    color: openIndex === i ? "#00C9A7" : "rgba(255,255,255,0.85)",
                     fontFamily: "'Space Grotesk', sans-serif",
                     fontSize: "0.95rem",
                   }}
@@ -115,7 +108,7 @@ export default function FaqSection() {
                 <ChevronDown
                   size={18}
                   style={{
-                    color: openIndex === i ? "#00C9A7" : "rgba(13,27,42,0.4)",
+                    color: openIndex === i ? "#00C9A7" : "rgba(255,255,255,0.3)",
                     transform: openIndex === i ? "rotate(180deg)" : "rotate(0deg)",
                     transition: "transform 0.2s ease, color 0.2s ease",
                     flexShrink: 0,
@@ -125,7 +118,7 @@ export default function FaqSection() {
               {openIndex === i && (
                 <div
                   className="px-7 pb-6 text-sm leading-relaxed"
-                  style={{ color: "rgba(13,27,42,0.65)" }}
+                  style={{ color: "rgba(255,255,255,0.55)" }}
                 >
                   {faq.answer}
                 </div>

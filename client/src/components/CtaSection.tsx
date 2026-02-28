@@ -1,90 +1,94 @@
 /*
- * CtaSection — "Ready to Stop Losing Visitors?"
- * Dark navy with teal gradient background image
+ * CtaSection — Front.com-inspired
+ * Dark background, bold two-line headline, dual CTAs
  */
-
-import { ArrowRight } from "lucide-react";
 
 export default function CtaSection() {
   return (
     <section
       className="py-28 relative overflow-hidden"
-      style={{ background: "#0D1B2A" }}
+      style={{ background: "#080F18" }}
     >
-      {/* Background image */}
+      {/* Radial glow */}
       <div
-        className="absolute inset-0 opacity-50"
+        className="absolute inset-0 pointer-events-none"
         style={{
-          backgroundImage: `url(https://d2xsxph8kpxj0f.cloudfront.net/310519663390113999/SS6w9n9Gp9eGiveEMGxHyC/ansera-cta-bg-kB9uH68icYfqnqw2cdhdhm.webp)`,
-          backgroundSize: "cover",
-          backgroundPosition: "center",
-        }}
-      />
-      <div
-        className="absolute inset-0"
-        style={{
-          background: "linear-gradient(135deg, rgba(13,27,42,0.85) 0%, rgba(13,27,42,0.6) 50%, rgba(13,27,42,0.85) 100%)",
+          background: "radial-gradient(ellipse 60% 60% at 50% 50%, rgba(0,201,167,0.08) 0%, transparent 70%)",
         }}
       />
 
-      <div className="container relative z-10 mx-auto px-6 max-w-4xl text-center">
-        <div className="reveal">
-          <div
-            className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium mb-8"
+      {/* Subtle grid */}
+      <div
+        className="absolute inset-0 opacity-[0.025] pointer-events-none"
+        style={{
+          backgroundImage: "linear-gradient(rgba(255,255,255,0.5) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.5) 1px, transparent 1px)",
+          backgroundSize: "60px 60px",
+        }}
+      />
+
+      <div className="container relative z-10 mx-auto px-6 max-w-5xl text-center">
+        {/* Eyebrow */}
+        <p
+          className="text-xs font-semibold tracking-widest uppercase mb-6 reveal"
+          style={{ color: "#00C9A7", letterSpacing: "0.15em" }}
+        >
+          Get started today
+        </p>
+
+        {/* Headline */}
+        <h2
+          className="text-5xl lg:text-6xl xl:text-7xl font-bold text-white leading-[1.0] mb-6 reveal"
+          style={{ fontFamily: "'Space Grotesk', sans-serif", letterSpacing: "-0.04em" }}
+        >
+          Ready to deliver exceptional
+          <br />
+          answers with Ansera?
+        </h2>
+
+        <p
+          className="text-xl mb-12 max-w-[560px] mx-auto reveal"
+          style={{ color: "rgba(255,255,255,0.5)" }}
+        >
+          Join 500+ teams who've transformed their website into an AI-powered answer engine.
+        </p>
+
+        {/* CTAs */}
+        <div className="flex flex-col sm:flex-row gap-4 justify-center items-center reveal">
+          <button
+            className="btn-teal px-8 py-4 rounded-xl text-base font-semibold"
+            style={{ fontFamily: "'Space Grotesk', sans-serif", minWidth: "200px" }}
+          >
+            Start free trial
+          </button>
+          <button
+            className="px-8 py-4 rounded-xl text-base font-semibold transition-all duration-200"
             style={{
-              background: "rgba(0, 201, 167, 0.12)",
-              border: "1px solid rgba(0, 201, 167, 0.3)",
-              color: "#00C9A7",
+              background: "transparent",
+              border: "1px solid rgba(255,255,255,0.15)",
+              color: "rgba(255,255,255,0.8)",
+              fontFamily: "'Space Grotesk', sans-serif",
+              minWidth: "200px",
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.borderColor = "rgba(255,255,255,0.35)";
+              e.currentTarget.style.color = "#fff";
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.borderColor = "rgba(255,255,255,0.15)";
+              e.currentTarget.style.color = "rgba(255,255,255,0.8)";
             }}
           >
-            Get Started Today
-          </div>
-          <h2
-            className="text-4xl lg:text-6xl font-bold text-white mb-6"
-            style={{ fontFamily: "'Space Grotesk', sans-serif", letterSpacing: "-0.04em" }}
-          >
-            Ready to stop losing
-            <br />
-            <span className="text-gradient-teal">visitors?</span>
-          </h2>
-          <p
-            className="text-lg mb-10 max-w-xl mx-auto"
-            style={{ color: "rgba(255,255,255,0.65)", lineHeight: 1.7 }}
-          >
-            Get started for free. No credit card required. See results in days, not months.
-            Join 500+ teams who've transformed their website experience.
-          </p>
-
-          <div className="flex flex-wrap gap-4 justify-center">
-            <button
-              className="btn-teal flex items-center gap-2 px-8 py-4 rounded-xl text-base font-semibold"
-              style={{ fontFamily: "'Space Grotesk', sans-serif" }}
-            >
-              Start Free Trial
-              <ArrowRight size={18} />
-            </button>
-            <button
-              className="flex items-center gap-2 px-8 py-4 rounded-xl text-base font-medium transition-all duration-200"
-              style={{
-                border: "1px solid rgba(255,255,255,0.25)",
-                color: "rgba(255,255,255,0.85)",
-                background: "rgba(255,255,255,0.06)",
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.background = "rgba(255,255,255,0.12)";
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.background = "rgba(255,255,255,0.06)";
-              }}
-            >
-              Schedule Demo
-            </button>
-          </div>
-
-          <p className="mt-6 text-sm" style={{ color: "rgba(255,255,255,0.35)" }}>
-            14-day free trial · No credit card required · Cancel anytime
-          </p>
+            Request a demo
+          </button>
         </div>
+
+        {/* Trust note */}
+        <p
+          className="mt-8 text-sm reveal"
+          style={{ color: "rgba(255,255,255,0.3)" }}
+        >
+          No credit card required · 14-day free trial · Cancel anytime
+        </p>
       </div>
     </section>
   );

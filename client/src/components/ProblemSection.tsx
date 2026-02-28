@@ -1,121 +1,126 @@
 /*
- * ProblemSection — "The Problem With Traditional Search"
- * Light background, dark cards with icon accents
+ * ProblemSection — Linear.app-inspired
+ * Dark background, large left-aligned headline, stat cards on right
  */
 
-import { TrendingDown, HeadphonesIcon, XCircle } from "lucide-react";
+import { TrendingDown, MessageSquareX, DollarSign } from "lucide-react";
 
 const problems = [
   {
     icon: TrendingDown,
-    title: "High Bounce Rates",
-    description:
-      "Visitors can't find what they need, so they leave. Every failed search is a visitor you've permanently lost to a competitor.",
     stat: "68%",
-    statLabel: "of visitors leave after a failed search",
+    label: "of visitors leave after a failed search",
+    detail: "Every failed search is a visitor permanently lost to a competitor.",
   },
   {
-    icon: HeadphonesIcon,
-    title: "Support Overload",
-    description:
-      "The same questions asked repeatedly, day after day. Your team spends hours answering what your site should handle automatically.",
-    stat: "4.2x",
-    statLabel: "more support tickets from poor search",
+    icon: MessageSquareX,
+    stat: "4.2×",
+    label: "more support tickets from poor search",
+    detail: "Your team spends hours answering questions your site should handle.",
   },
   {
-    icon: XCircle,
-    title: "Lost Conversions",
-    description:
-      "Prospects get frustrated and go to competitors. Every bad search experience is a lost deal — and you never even know it happened.",
+    icon: DollarSign,
     stat: "$2.1M",
-    statLabel: "average annual revenue lost to poor UX",
+    label: "average annual revenue lost to poor UX",
+    detail: "Frustrated prospects leave and never come back.",
   },
 ];
 
 export default function ProblemSection() {
   return (
-    <section className="py-24" style={{ background: "#f8f9fa" }}>
-      <div className="container mx-auto px-6 max-w-7xl">
-        {/* Header */}
-        <div className="text-center mb-16 reveal">
-          <div
-            className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium mb-6"
-            style={{
-              background: "rgba(220, 38, 38, 0.08)",
-              border: "1px solid rgba(220, 38, 38, 0.2)",
-              color: "#dc2626",
-            }}
-          >
-            The Problem
-          </div>
-          <h2
-            className="text-4xl lg:text-5xl font-bold mb-4"
-            style={{ color: "#0D1B2A", fontFamily: "'Space Grotesk', sans-serif", letterSpacing: "-0.03em" }}
-          >
-            Your search is costing you
-            <br />
-            <span style={{ color: "#dc2626" }}>real money.</span>
-          </h2>
-          <p
-            className="text-lg max-w-2xl mx-auto"
-            style={{ color: "rgba(13,27,42,0.6)", lineHeight: 1.7 }}
-          >
-            Traditional keyword search was built for a different era. Today's visitors expect
-            instant, intelligent answers — not a list of vague results.
-          </p>
-        </div>
+    <section
+      className="py-28 relative overflow-hidden"
+      style={{ background: "#080F18" }}
+    >
+      {/* Subtle grid background */}
+      <div
+        className="absolute inset-0 opacity-[0.03] pointer-events-none"
+        style={{
+          backgroundImage: "linear-gradient(rgba(255,255,255,0.5) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.5) 1px, transparent 1px)",
+          backgroundSize: "60px 60px",
+        }}
+      />
 
-        {/* Problem cards */}
-        <div className="grid md:grid-cols-3 gap-6">
-          {problems.map((problem, i) => (
-            <div
-              key={problem.title}
-              className={`reveal delay-${(i + 1) * 100} rounded-2xl p-8 transition-all duration-300`}
-              style={{
-                background: "#fff",
-                border: "1px solid rgba(0,0,0,0.06)",
-                boxShadow: "0 4px 24px rgba(0,0,0,0.04)",
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.boxShadow = "0 8px 40px rgba(0,0,0,0.1)";
-                e.currentTarget.style.transform = "translateY(-4px)";
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.boxShadow = "0 4px 24px rgba(0,0,0,0.04)";
-                e.currentTarget.style.transform = "translateY(0)";
-              }}
+      <div className="container relative z-10 mx-auto px-6 max-w-7xl">
+        <div className="grid lg:grid-cols-2 gap-20 items-center">
+          {/* Left: headline */}
+          <div className="reveal-left">
+            <p
+              className="text-xs font-semibold tracking-widest uppercase mb-6"
+              style={{ color: "#00C9A7", letterSpacing: "0.15em" }}
             >
+              The Problem
+            </p>
+            <h2
+              className="text-4xl lg:text-5xl xl:text-6xl font-bold text-white mb-8 leading-[1.05]"
+              style={{ fontFamily: "'Space Grotesk', sans-serif", letterSpacing: "-0.04em" }}
+            >
+              Your website is losing visitors every single day.
+            </h2>
+            <p
+              className="text-lg leading-relaxed mb-10"
+              style={{ color: "rgba(255,255,255,0.5)" }}
+            >
+              Traditional keyword search was built for a different era. Today's visitors expect instant, intelligent answers — not a list of vague results that sends them to your competitor.
+            </p>
+            <div
+              className="inline-flex items-center gap-2 text-sm font-medium cursor-pointer"
+              style={{ color: "#00C9A7" }}
+            >
+              See how Ansera fixes this
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <path d="M5 12h14M12 5l7 7-7 7" />
+              </svg>
+            </div>
+          </div>
+
+          {/* Right: stat cards */}
+          <div className="space-y-4 reveal-right">
+            {problems.map((p, i) => (
               <div
-                className="w-12 h-12 rounded-xl flex items-center justify-center mb-6"
-                style={{ background: "rgba(220, 38, 38, 0.08)" }}
-              >
-                <problem.icon size={22} style={{ color: "#dc2626" }} />
-              </div>
-              <h3
-                className="text-xl font-bold mb-3"
-                style={{ color: "#0D1B2A", fontFamily: "'Space Grotesk', sans-serif" }}
-              >
-                {problem.title}
-              </h3>
-              <p className="text-sm leading-relaxed mb-6" style={{ color: "rgba(13,27,42,0.6)" }}>
-                {problem.description}
-              </p>
-              <div
-                className="pt-5 border-t"
-                style={{ borderColor: "rgba(0,0,0,0.06)" }}
+                key={p.stat}
+                className={`reveal delay-${(i + 1) * 100} flex items-start gap-5 p-6 rounded-2xl transition-all duration-300`}
+                style={{
+                  background: "rgba(255,255,255,0.03)",
+                  border: "1px solid rgba(255,255,255,0.07)",
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.background = "rgba(255,255,255,0.06)";
+                  e.currentTarget.style.borderColor = "rgba(0,201,167,0.2)";
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.background = "rgba(255,255,255,0.03)";
+                  e.currentTarget.style.borderColor = "rgba(255,255,255,0.07)";
+                }}
               >
                 <div
-                  className="text-2xl font-bold mb-1"
-                  style={{ color: "#dc2626", fontFamily: "'Space Grotesk', sans-serif" }}
+                  className="w-11 h-11 rounded-xl flex items-center justify-center flex-shrink-0"
+                  style={{ background: "rgba(239,68,68,0.1)" }}
                 >
-                  {problem.stat}
+                  <p.icon size={20} style={{ color: "#ef4444" }} />
                 </div>
-                <div className="text-xs" style={{ color: "rgba(13,27,42,0.5)" }}>
-                  {problem.statLabel}
+                <div className="flex-1">
+                  <div className="flex items-baseline gap-3 mb-1">
+                    <span
+                      className="text-3xl font-bold"
+                      style={{ color: "#ef4444", fontFamily: "'Space Grotesk', sans-serif", letterSpacing: "-0.03em" }}
+                    >
+                      {p.stat}
+                    </span>
+                    <span
+                      className="text-sm font-medium"
+                      style={{ color: "rgba(255,255,255,0.6)" }}
+                    >
+                      {p.label}
+                    </span>
+                  </div>
+                  <p className="text-sm" style={{ color: "rgba(255,255,255,0.35)" }}>
+                    {p.detail}
+                  </p>
                 </div>
               </div>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
       </div>
     </section>
